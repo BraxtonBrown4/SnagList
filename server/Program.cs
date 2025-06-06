@@ -55,13 +55,6 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // allows our api endpoints to access the database through Entity Framework Core
 builder.Services.AddNpgsql<SnagListDbContext>(builder.Configuration["SnagListDbConnectionString"]);
 
- /*
- dotnet user-secrets init
-
- dotnet user-secrets set "SnagListDbConnectionString" "Host=localhost;Port=5432;Database=SnagListDbConnectionString;Username=postgres;Password=password"
- */
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
