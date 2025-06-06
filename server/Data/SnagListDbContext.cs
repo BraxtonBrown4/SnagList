@@ -44,9 +44,9 @@ public class SnagListDbContext : IdentityDbContext<IdentityUser>
         {
             Id = 1,
             IdentityUserId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
-            FirstName = "Admina",
-            LastName = "Strator",
-            Address = "101 Main Street",
+            FirstName = "Braxton",
+            LastName = "Brown",
+            Address = "Admin Lane",
         });
 
         /*

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text;
 using SnagList.Models;
-using SnagList.Models.DTOs;
+using SnagList.DTOs;
 using SnagList.Data;
 
 namespace SnagList.Controllers;
