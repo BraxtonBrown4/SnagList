@@ -25,14 +25,14 @@ public class SnagListDbContext : IdentityDbContext<IdentityUser>
         {
             Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
             Name = "Admin",
-            NormalizedName = "admin"
+            NormalizedName = "ADMIN"
         });
 
         modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
         {
             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
-            UserName = "Administrator",
-            Email = "admina@strator.comx",
+            UserName = "Robopolo",
+            Email = "braxtoncarterbrown@gmail.com",
             PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
         });
 
