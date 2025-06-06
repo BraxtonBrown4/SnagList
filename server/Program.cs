@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using client.Data;
+using SnagList.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
     {
-        options.Cookie.Name = "clientLoginCookie";
+        options.Cookie.Name = "SnagListLoginCookie";
         options.Cookie.SameSite = SameSiteMode.Strict;
         options.Cookie.HttpOnly = true; //The cookie cannot be accessed through JS (protects against XSS)
         options.Cookie.MaxAge = new TimeSpan(7, 0, 0, 0); // cookie expires in a week regardless of activity
@@ -47,18 +47,18 @@ builder.Services.AddIdentityCore<IdentityUser>(config =>
                 config.User.RequireUniqueEmail = true;
             })
     .AddRoles<IdentityRole>()  //add the role service.  
-    .AddEntityFrameworkStores<clientDbContext>();
+    .AddEntityFrameworkStores<SnagListDbContext>();
 
 // allows passing datetimes without time zone data 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // allows our api endpoints to access the database through Entity Framework Core
-builder.Services.AddNpgsql<clientDbContext>(builder.Configuration["clientDbConnectionString"]);
+builder.Services.AddNpgsql<SnagListDbContext>(builder.Configuration["SnagListDbConnectionString"]);
 
  /*
  dotnet user-secrets init
 
- dotnet user-secrets set "clientDbConnectionString" "Host=localhost;Port=5432;Database=clientDbConnectionString;Username=postgres;Password=password"
+ dotnet user-secrets set "SnagListDbConnectionString" "Host=localhost;Port=5432;Database=SnagListDbConnectionString;Username=postgres;Password=password"
  */
 
 

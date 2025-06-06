@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace client.Models;
+namespace SnagList.Models;
 
 public class UserProfile
 {

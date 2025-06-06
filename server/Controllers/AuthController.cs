@@ -5,21 +5,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text;
-using client.Models;
-using client.Models.DTOs;
-using client.Data;
+using SnagList.Models;
+using SnagList.Models.DTOs;
+using SnagList.Data;
 
-namespace client.Controllers;
+namespace SnagList.Controllers;
 
 
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private clientDbContext _dbContext;
+    private SnagListDbContext _dbContext;
     private UserManager<IdentityUser> _userManager;
 
-    public AuthController(clientDbContext context, UserManager<IdentityUser> userManager)
+    public AuthController(SnagListDbContext context, UserManager<IdentityUser> userManager)
     {
         _dbContext = context;
         _userManager = userManager;

@@ -1,4 +1,4 @@
-namespace client.Models.DTOs;
+namespace SnagList.Models.DTOs;
 
 public class RegistrationDTO
 {

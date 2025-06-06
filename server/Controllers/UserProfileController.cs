@@ -1,20 +1,20 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using client.Data;
-using client.Models.DTOs;
-using client.Models;
+using SnagList.Data;
+using SnagList.Models.DTOs;
+using SnagList.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
-namespace client.Controllers;
+namespace SnagList.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class UserProfileController : ControllerBase
 {
-    private clientDbContext _dbContext;
+    private SnagListDbContext _dbContext;
 
-    public UserProfileController(clientDbContext context)
+    public UserProfileController(SnagListDbContext context)
     {
         _dbContext = context;
     }

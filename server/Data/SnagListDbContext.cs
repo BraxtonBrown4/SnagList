@@ -1,17 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using client.Models;
+using SnagList.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace client.Data;
-public class clientDbContext : IdentityDbContext<IdentityUser>
+namespace SnagList.Data;
+public class SnagListDbContext : IdentityDbContext<IdentityUser>
 {
     private readonly IConfiguration _configuration;
     
      /* public DbSet<example> examples { get; set; } */
     public DbSet<UserProfile> UserProfiles { get; set; }
 
-    public clientDbContext(DbContextOptions<clientDbContext> context, IConfiguration config) : base(context)
+    public SnagListDbContext(DbContextOptions<SnagListDbContext> context, IConfiguration config) : base(context)
     {
         _configuration = config;
     }
