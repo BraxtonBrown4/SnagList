@@ -149,13 +149,13 @@ namespace SnagList.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9ae51faf-f9cc-4263-b6b5-90e7bd5c5b13",
+                            ConcurrencyStamp = "3ae4b3b8-c40c-4e2a-aa6a-680d4e090117",
                             Email = "braxtoncarterbrown@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEFnup/D2090mOWNTadcK5AsvlGe8QidNaDSM1H3XssdjVItZ5Kzwso/JMlk8iociUg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDNlndJ0wTEMZUEqaf0jL69fId+jkrAp4vmeRMRjv5YNvC4R9z85bqbVgomxgnTKcA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3b3d3756-c1ef-40e6-ab30-b38dea153fec",
+                            SecurityStamp = "e5c7dea7-54ae-4754-877b-ac2f44047fa2",
                             TwoFactorEnabled = false,
                             UserName = "Robopolo"
                         });
@@ -277,7 +277,7 @@ namespace SnagList.Migrations
 
                     b.HasIndex("ListId");
 
-                    b.ToTable("Item");
+                    b.ToTable("Items");
 
                     b.HasData(
                         new
@@ -318,7 +318,7 @@ namespace SnagList.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("List");
+                    b.ToTable("Lists");
 
                     b.HasData(
                         new
@@ -357,7 +357,7 @@ namespace SnagList.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ListTag");
+                    b.ToTable("ListTags");
 
                     b.HasData(
                         new
@@ -400,7 +400,7 @@ namespace SnagList.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
 
                     b.HasData(
                         new

@@ -1,4 +1,6 @@
 using AutoMapper;
+using SnagList.DTOs;
+using SnagList.Models;
 
 public class AutoMapperProfiles : Profile
 {
@@ -12,5 +14,7 @@ public class AutoMapperProfiles : Profile
            Example of how to custom handle logic
         CreateMap<Order, DefaultOrderDTO>().ForMember(DTO => DTO.Total, opt => opt.MapFrom(order => order.OrderProducts.Sum(op => op.Product.Price * op.Quantity)));
         */
+
+        CreateMap<List, DefaultListDTO>().ReverseMap();
     }
 }

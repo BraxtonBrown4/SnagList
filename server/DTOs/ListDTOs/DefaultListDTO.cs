@@ -4,7 +4,7 @@ using SnagList.Models;
 
 namespace SnagList.DTOs;
 
-public class DefaultListDTOs
+public class DefaultListDTO
 {
   public int Id { get; set; }
   public int UserProfileId { get; set; }
