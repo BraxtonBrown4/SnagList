@@ -54,7 +54,7 @@ namespace SnagList.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tag",
+                name: "Tags",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -63,7 +63,7 @@ namespace SnagList.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tag", x => x.Id);
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,7 +196,7 @@ namespace SnagList.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "List",
+                name: "Lists",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -207,9 +207,9 @@ namespace SnagList.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_List", x => x.Id);
+                    table.PrimaryKey("PK_Lists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_List_UserProfiles_UserProfileId",
+                        name: "FK_Lists_UserProfiles_UserProfileId",
                         column: x => x.UserProfileId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
@@ -217,7 +217,7 @@ namespace SnagList.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Item",
+                name: "Items",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -230,17 +230,17 @@ namespace SnagList.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Item", x => x.Id);
+                    table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Item_List_ListId",
+                        name: "FK_Items_Lists_ListId",
                         column: x => x.ListId,
-                        principalTable: "List",
+                        principalTable: "Lists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ListTag",
+                name: "ListTags",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -250,17 +250,17 @@ namespace SnagList.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ListTag", x => x.Id);
+                    table.PrimaryKey("PK_ListTags", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ListTag_List_ListId",
+                        name: "FK_ListTags_Lists_ListId",
                         column: x => x.ListId,
-                        principalTable: "List",
+                        principalTable: "Lists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ListTag_Tag_TagId",
+                        name: "FK_ListTags_Tags_TagId",
                         column: x => x.TagId,
-                        principalTable: "Tag",
+                        principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -273,10 +273,10 @@ namespace SnagList.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "9ae51faf-f9cc-4263-b6b5-90e7bd5c5b13", "braxtoncarterbrown@gmail.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEFnup/D2090mOWNTadcK5AsvlGe8QidNaDSM1H3XssdjVItZ5Kzwso/JMlk8iociUg==", null, false, "3b3d3756-c1ef-40e6-ab30-b38dea153fec", false, "Robopolo" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "3ae4b3b8-c40c-4e2a-aa6a-680d4e090117", "braxtoncarterbrown@gmail.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEDNlndJ0wTEMZUEqaf0jL69fId+jkrAp4vmeRMRjv5YNvC4R9z85bqbVgomxgnTKcA==", null, false, "e5c7dea7-54ae-4754-877b-ac2f44047fa2", false, "Robopolo" });
 
             migrationBuilder.InsertData(
-                table: "Tag",
+                table: "Tags",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -296,7 +296,7 @@ namespace SnagList.Migrations
                 values: new object[] { 1, "Admin Lane", "Braxton", "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", "Brown", "https://store-images.s-microsoft.com/image/apps.9168.71037132718083264.9e558f9c-31e4-4757-b43c-05a53e0c4977.2cabd63d-49ce-4a77-af56-0a1d6a33f61b?q=90&w=480&h=270", "Robopolo" });
 
             migrationBuilder.InsertData(
-                table: "List",
+                table: "Lists",
                 columns: new[] { "Id", "IsPublic", "Name", "UserProfileId" },
                 values: new object[,]
                 {
@@ -305,7 +305,7 @@ namespace SnagList.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Item",
+                table: "Items",
                 columns: new[] { "Id", "Image", "ListId", "Name", "Price", "TargetPrice" },
                 values: new object[,]
                 {
@@ -314,7 +314,7 @@ namespace SnagList.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ListTag",
+                table: "ListTags",
                 columns: new[] { "Id", "ListId", "TagId" },
                 values: new object[,]
                 {
@@ -362,23 +362,23 @@ namespace SnagList.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_ListId",
-                table: "Item",
+                name: "IX_Items_ListId",
+                table: "Items",
                 column: "ListId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_List_UserProfileId",
-                table: "List",
+                name: "IX_Lists_UserProfileId",
+                table: "Lists",
                 column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListTag_ListId",
-                table: "ListTag",
+                name: "IX_ListTags_ListId",
+                table: "ListTags",
                 column: "ListId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListTag_TagId",
-                table: "ListTag",
+                name: "IX_ListTags_TagId",
+                table: "ListTags",
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
@@ -406,19 +406,19 @@ namespace SnagList.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Item");
+                name: "Items");
 
             migrationBuilder.DropTable(
-                name: "ListTag");
+                name: "ListTags");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "List");
+                name: "Lists");
 
             migrationBuilder.DropTable(
-                name: "Tag");
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "UserProfiles");

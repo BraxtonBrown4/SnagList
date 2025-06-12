@@ -11,6 +11,10 @@ public class SnagListDbContext : IdentityDbContext<IdentityUser>
 
     /* public DbSet<example> examples { get; set; } */
     public DbSet<UserProfile> UserProfiles { get; set; }
+    public DbSet<List> Lists { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<ListTag> ListTags { get; set; }
+    public DbSet<Item> Items { get; set; }
 
     public SnagListDbContext(DbContextOptions<SnagListDbContext> context, IConfiguration config) : base(context)
     {
