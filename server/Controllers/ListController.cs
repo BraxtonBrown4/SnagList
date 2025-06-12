@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SnagList.Controllers;
 
@@ -23,11 +24,17 @@ public class ListController : ControllerBase
         _mapper = mapper;
     }
 
-    
+
     [HttpGet("public")]
     public IActionResult Get()
     {
-        List<DefaultListDTO> results = _db.Lists.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
-        return Ok(results);
+        IQueryable query = _db.Lists
+        .Include(l => l.ListTags).ThenInclude(l => l.Tag)
+        .Include(l => l.UserProfile)
+        .Where(l => l.IsPublic);
+
+        List<DefaultListDTO> publicLists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
+
+        return Ok(publicLists);
     }
 }

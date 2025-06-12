@@ -15,6 +15,10 @@ public class AutoMapperProfiles : Profile
         CreateMap<Order, DefaultOrderDTO>().ForMember(DTO => DTO.Total, opt => opt.MapFrom(order => order.OrderProducts.Sum(op => op.Product.Price * op.Quantity)));
         */
 
-        CreateMap<List, DefaultListDTO>().ReverseMap();
+        CreateMap<UserProfile, DefaultUserProfileDTO>().ReverseMap();
+        CreateMap<ListTag, DefaultListTagDTO>().ReverseMap();
+        CreateMap<Tag, DefaultTagDTO>().ReverseMap();
+        CreateMap<List, DefaultListDTO>().ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.ListTags.Select(lt => lt.Tag))).ReverseMap();
+
     }
 }
