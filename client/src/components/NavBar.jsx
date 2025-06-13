@@ -6,15 +6,15 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-900 text-white fixed top-0 left-0 w-full z-50 shadow-md">
-      <div className="container mx-auto px-4 flex items-center justify-between h-16">
+    <nav className="">
+      <div className="w-screen">
         <RRNavLink to="/" className="text-xl font-semibold">
           SnagList
         </RRNavLink>
 
         {loggedInUser ? (
           <button
-            className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded"
+            className=""
             onClick={(e) => {
               e.preventDefault();
               setOpen(false);
@@ -28,7 +28,7 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
         ) : (
           <div>
             <RRNavLink to="/login" className="inline-block">
-              <button className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded">
+              <button className="">
                 Login
               </button>
             </RRNavLink>
