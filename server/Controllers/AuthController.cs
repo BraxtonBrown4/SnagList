@@ -133,10 +133,18 @@ public class AuthController : ControllerBase
             .GetString(Convert.FromBase64String(registration.Password));
 
         var result = await _userManager.CreateAsync(user, password);
+
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return BadRequest(errors);
+        }
+
         if (result.Succeeded)
         {
             _dbContext.UserProfiles.Add(new UserProfile
             {
+                UserName = registration.UserName,
                 FirstName = registration.FirstName,
                 LastName = registration.LastName,
                 Address = registration.Address,
