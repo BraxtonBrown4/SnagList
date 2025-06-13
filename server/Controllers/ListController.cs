@@ -26,7 +26,7 @@ public class ListController : ControllerBase
     }
 
 
-    [HttpGet("public")]
+    [HttpGet("Public")]
     public IActionResult GetAllPublic()
     {
         IQueryable query = _db.Lists
