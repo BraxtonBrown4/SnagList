@@ -13,7 +13,7 @@ using System.Security.Claims;
 namespace SnagList.Controllers;
 
 [ApiController]
-[Route("api/[controller]s")]
+[Route("api/Lists")]
 public class ListController : ControllerBase
 {
     private SnagListDbContext _db;
