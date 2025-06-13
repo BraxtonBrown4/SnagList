@@ -6,33 +6,32 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="">
-      <div className="w-screen">
-        <RRNavLink to="/" className="text-xl font-semibold">
+    <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white shadow-md z-50">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <RRNavLink
+          to="/"
+          className="text-2xl font-bold tracking-wide hover:text-gray-300"
+        >
           SnagList
         </RRNavLink>
 
         {loggedInUser ? (
           <button
-            className=""
             onClick={(e) => {
               e.preventDefault();
               setOpen(false);
-              logout().then(() => {
-                setLoggedInUser(null);
-              });
+              logout().then(() => setLoggedInUser(null));
             }}
+            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-semibold transition"
           >
             Logout
           </button>
         ) : (
-          <div>
-            <RRNavLink to="/login" className="inline-block">
-              <button className="">
-                Login
-              </button>
-            </RRNavLink>
-          </div>
+          <RRNavLink to="/login">
+            <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-semibold transition text-white">
+              Login
+            </button>
+          </RRNavLink>
         )}
       </div>
     </nav>
