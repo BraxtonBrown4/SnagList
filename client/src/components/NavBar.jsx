@@ -7,6 +7,7 @@ import {
   NavItem,
   Navbar,
   NavbarBrand,
+  Container,
 } from "reactstrap";
 import { logout } from "../managers/authManager";
 
@@ -15,35 +16,34 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
 
   return (
     <div>
-      <Navbar color="light" light fixed="true" expand="lg">
-        <NavbarBrand className="mr-auto" tag={RRNavLink} to="/">
-          SnagList
-        </NavbarBrand>
-        {loggedInUser ? (
-          <>
+      <Navbar color="dark" dark expand="lg" fixed="top">
+        <Container>
+          <NavbarBrand tag={RRNavLink} to="/">
+            SnagList
+          </NavbarBrand>
+          {loggedInUser ? (
             <Button
-              color="primary"
+              color="secondary"
               onClick={(e) => {
                 e.preventDefault();
                 setOpen(false);
                 logout().then(() => {
                   setLoggedInUser(null);
-                  setOpen(false);
                 });
               }}
             >
               Logout
             </Button>
-          </>
-        ) : (
-          <Nav navbar>
-            <NavItem>
-              <NavLink tag={RRNavLink} to="/login">
-                <Button color="primary">Login</Button>
-              </NavLink>
-            </NavItem>
-          </Nav>
-        )}
+          ) : (
+            <Nav navbar className="ms-auto">
+              <NavItem>
+                <NavLink tag={RRNavLink} to="/login">
+                  <Button color="secondary">Login</Button>
+                </NavLink>
+              </NavItem>
+            </Nav>
+          )}
+        </Container>
       </Navbar>
     </div>
   );
