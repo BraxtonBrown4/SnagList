@@ -1,50 +1,40 @@
 import { useState } from "react";
 import { NavLink as RRNavLink } from "react-router-dom";
-import {
-  Button,
-  Nav,
-  NavLink,
-  NavItem,
-  Navbar,
-  NavbarBrand,
-  Container,
-} from "reactstrap";
 import { logout } from "../managers/authManager";
 
 export default function NavBar({ loggedInUser, setLoggedInUser }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
-      <Navbar color="dark" dark expand="lg" fixed="top">
-        <Container>
-          <NavbarBrand tag={RRNavLink} to="/">
-            SnagList
-          </NavbarBrand>
-          {loggedInUser ? (
-            <Button
-              color="secondary"
-              onClick={(e) => {
-                e.preventDefault();
-                setOpen(false);
-                logout().then(() => {
-                  setLoggedInUser(null);
-                });
-              }}
-            >
-              Logout
-            </Button>
-          ) : (
-            <Nav navbar className="ms-auto">
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/login">
-                  <Button color="secondary">Login</Button>
-                </NavLink>
-              </NavItem>
-            </Nav>
-          )}
-        </Container>
-      </Navbar>
-    </div>
+    <nav className="bg-gray-900 text-white fixed top-0 left-0 w-full z-50 shadow-md">
+      <div className="container mx-auto px-4 flex items-center justify-between h-16">
+        <RRNavLink to="/" className="text-xl font-semibold">
+          SnagList
+        </RRNavLink>
+
+        {loggedInUser ? (
+          <button
+            className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              logout().then(() => {
+                setLoggedInUser(null);
+              });
+            }}
+          >
+            Logout
+          </button>
+        ) : (
+          <div>
+            <RRNavLink to="/login" className="inline-block">
+              <button className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded">
+                Login
+              </button>
+            </RRNavLink>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 }
