@@ -12,5 +12,6 @@ public class List
   [Required]
   public string Name { get; set; }
   public bool IsPublic { get; set; } = false;
-  public List<ListTag> ListTags { get; set;  }
+  public List<ListTag> ListTags { get; set; }
+  public List<Item> Items { get; set; }
 }

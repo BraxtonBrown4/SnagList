@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Claims;
 
 namespace SnagList.Controllers;
 
@@ -26,15 +27,50 @@ public class ListController : ControllerBase
 
 
     [HttpGet("public")]
-    public IActionResult Get()
+    public IActionResult GetAllPublic()
     {
         IQueryable query = _db.Lists
         .Include(l => l.ListTags).ThenInclude(l => l.Tag)
         .Include(l => l.UserProfile)
+        .Include(l => l.Items)
         .Where(l => l.IsPublic);
 
         List<DefaultListDTO> publicLists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
 
         return Ok(publicLists);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetPublicById(int id)
+    {
+        IQueryable query = _db.Lists
+        .Include(l => l.ListTags).ThenInclude(l => l.Tag)
+        .Include(l => l.UserProfile)
+        .Include(l => l.Items)
+        .Where(l => l.UserProfileId == id && l.IsPublic);
+
+        List<DefaultListDTO> publicLists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
+
+        return Ok(publicLists);
+    }
+
+    [HttpGet("Me")]
+    public IActionResult Get()
+    {
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+        if (profile != null)
+        {
+            IQueryable query = _db.Lists
+        .Include(l => l.ListTags).ThenInclude(l => l.Tag)
+        .Include(l => l.UserProfile)
+        .Include(l => l.Items)
+        .Where(l => l.UserProfileId == profile.Id);
+
+            List<DefaultListDTO> publicLists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
+
+            return Ok(publicLists);
+        }
+        return NotFound();
     }
 }

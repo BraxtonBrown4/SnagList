@@ -12,4 +12,5 @@ public class DefaultListDTO
   public string Name { get; set; }
   public bool IsPublic { get; set; }
   public List<DefaultTagDTO> Tags { get; set; }
+  public List<DefaultItemDTO> Items { get; set; }
 }
