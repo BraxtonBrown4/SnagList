@@ -103,4 +103,26 @@ public class ListController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("Me/{id}")]
+    public IActionResult GetMyListById(int id)
+    {
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        List list = _db.Lists
+        .Include(l => l.ListTags).ThenInclude(l => l.Tag)
+        .Include(l => l.UserProfile)
+        .Include(l => l.Items)
+        .FirstOrDefault(l => l.Id == id);
+
+        if (profile != null && list.UserProfileId == profile.Id)
+        {
+
+            DefaultListDTO listDTO = _mapper.Map<DefaultListDTO>(list);
+
+            return Ok(listDTO);
+        }
+        return NotFound();
+    }
 }
