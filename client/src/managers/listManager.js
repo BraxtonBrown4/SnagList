@@ -11,3 +11,9 @@ export const getAllPublicLists = () => {
 export const getMyLists = () => {
     return fetch(`${_apiUrl}/Me`).then(res => res.json())
 }
+
+export const deleteListById = (listId) => {
+    return fetch(`${_apiUrl}/Me/${listId}`, {
+        method: "DELETE"
+    }).then(res => res.json())
+}
