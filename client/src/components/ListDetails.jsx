@@ -9,6 +9,11 @@ export const ListDetails = ({ loggedInUser }) => {
     const [deleteId, setDeleteId] = useState(0)
     const [list, setList] = useState({})
     const navigate = useNavigate()
+    const [usersList, setUsersList] = useState(false)
+
+    const isUsersList = (list) => {
+        setUsersList(list.userProfileId == loggedInUser.id)
+    }
 
     useEffect(() => {
         if (listId > 0 && isPublic && loggedInUser.id > 0 && deleteId == 0) {
@@ -17,13 +22,17 @@ export const ListDetails = ({ loggedInUser }) => {
             const boolIsPublic = isPublic == "true" ? true : false
 
             if (boolIsPublic) {
-                getPublicListById(parsedListId).then(setList)
+                getPublicListById(parsedListId).then((res) => {
+                    setList(res)
+                    isUsersList(res)
+            })
             } else {
                 getMyListById(parsedListId).then((res) => {
                     if (!res.id) {
                         navigate("/*")
                     } else {
                         setList(res)
+                        isUsersList(res)
                     }
                 })
             }
@@ -59,21 +68,22 @@ export const ListDetails = ({ loggedInUser }) => {
                                 {i.name}
                             </p>
 
-                            <div className="mt-2 sm:mt-0 sm:ml-auto flex gap-2">
-                                <button className="text-blue-600 hover:bg-blue-50 font-medium px-3 py-1 rounded-lg text-sm transition">
-                                    Edit
-                                </button>
-                                <button onClick={() => {setDeleteId(i.id)}} className="text-red-600 hover:bg-red-50 font-medium px-3 py-1 rounded-lg text-sm transition">
-                                    Delete
-                                </button>
-                            </div>
+                            {usersList &&
+                                <div className="mt-2 sm:mt-0 sm:ml-auto flex gap-2">
+                                    <button className="text-blue-600 hover:bg-blue-50 font-medium px-3 py-1 rounded-lg text-sm transition">
+                                        Edit
+                                    </button>
+                                    <button onClick={() => { setDeleteId(i.id) }} className="text-red-600 hover:bg-red-50 font-medium px-3 py-1 rounded-lg text-sm transition">
+                                        Delete
+                                    </button>
+                                </div>}
                         </div>
                     ))}
                 </div>
-                <button className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>
+                {usersList &&<button className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>}
             </div>
 
-            <DeleteModal deleteByIdFunc={deleteItemById} deleteId={deleteId} setDeleteId={setDeleteId}/>
+            <DeleteModal deleteByIdFunc={deleteItemById} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div >
 
     )
