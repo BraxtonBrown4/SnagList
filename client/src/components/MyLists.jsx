@@ -12,8 +12,10 @@ export const MyLists = ({ loggedInUser }) => {
 
 
     useEffect(() => {
-        getMyLists().then(setLists)
-    }, [loggedInUser])
+        if (deleteId == 0) {
+            getMyLists().then(setLists)
+        }
+    }, [loggedInUser, deleteId])
 
 
     return (
