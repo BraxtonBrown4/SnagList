@@ -40,18 +40,23 @@ public class ListController : ControllerBase
         return Ok(publicLists);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("Public/{id}")]
     public IActionResult GetPublicById(int id)
     {
-        IQueryable query = _db.Lists
+        List list = _db.Lists
         .Include(l => l.ListTags).ThenInclude(l => l.Tag)
         .Include(l => l.UserProfile)
         .Include(l => l.Items)
-        .Where(l => l.UserProfileId == id && l.IsPublic);
+        .FirstOrDefault(l => l.UserProfileId == id && l.IsPublic);
 
-        List<DefaultListDTO> publicLists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
+        if (list == null)
+        {
+            return NotFound();
+        }
 
-        return Ok(publicLists);
+        DefaultListDTO publicListDTO = _mapper.Map<DefaultListDTO>(list);
+
+        return Ok(publicListDTO);
     }
 
     [HttpGet("Me")]
@@ -67,9 +72,9 @@ public class ListController : ControllerBase
         .Include(l => l.Items)
         .Where(l => l.UserProfileId == profile.Id);
 
-            List<DefaultListDTO> publicLists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
+            List<DefaultListDTO> lists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
 
-            return Ok(publicLists);
+            return Ok(lists);
         }
         return NotFound();
     }
