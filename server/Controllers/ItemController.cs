@@ -78,4 +78,37 @@ public class ItemController : ControllerBase
         var itemDto = _mapper.Map<DefaultItemDTO>(item);
         return Created($"api/Items/{itemDto.Id}", itemDto);
     }
+
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public IActionResult UpdateItem(int id, DefaultItemDTO itemDTO)
+    {
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        if (profile == null)
+        {
+            return Forbid();
+        }
+
+        var item = _db.Items.Include(i => i.List).FirstOrDefault(i => i.Id == id);
+
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        if (item.List.UserProfileId != profile.Id)
+        {
+            return Forbid();
+        }
+
+        _mapper.Map(itemDTO, item);
+
+        _db.SaveChanges();
+
+        var updatedItemDto = _mapper.Map<DefaultItemDTO>(item);
+        return Ok(updatedItemDto);
+    }
 }
