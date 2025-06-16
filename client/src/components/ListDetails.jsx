@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { getMyListById, getPublicListById } from "../managers/listManager"
 
 export const ListDetails = ({ loggedInUser }) => {
     const { listId, isPublic } = useParams()
     const [list, setList] = useState({})
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (listId > 0 && isPublic && loggedInUser.id > 0) {
@@ -15,12 +16,18 @@ export const ListDetails = ({ loggedInUser }) => {
             if (boolIsPublic) {
                 getPublicListById(parsedListId).then(setList)
             } else {
-                getMyListById(parsedListId).then(setList)
+                getMyListById(parsedListId).then((res) => {
+                    if (!res.id) {
+                        navigate("/*")
+                    } else {
+                        setList(res)
+                    }
+                })
             }
         }
     }, [loggedInUser, listId, isPublic])
 
-    return (
+    return (list.id &&
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-50 p-6 overflow-auto">
 
             <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg border border-gray-200">
@@ -44,14 +51,25 @@ export const ListDetails = ({ loggedInUser }) => {
 
                 <div className="px-8 mb-8">
                     {list.items?.map((i) => (
-                        <p key={i.id} className="text-gray-600 text-sm font-medium mb-1">
-                            {i.name}
+                        <div key={i.id} className="w-full flex flex-col sm:flex-row items-center justify-between px-4 py-2">
+                            <p className="text-gray-600 text-sm font-medium text-center sm:absolute sm:left-1/2 sm:-translate-x-1/2 sm:transform">
+                                {i.name}
+                            </p>
 
-                        </p>
+                            <div className="mt-2 sm:mt-0 sm:ml-auto flex gap-2">
+                                <button className="text-blue-600 hover:bg-blue-50 font-medium px-3 py-1 rounded-lg text-sm transition">
+                                    Edit
+                                </button>
+                                <button className="text-red-600 hover:bg-red-50 font-medium px-3 py-1 rounded-lg text-sm transition">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
                     ))}
-                </div>
             </div>
+            <button className="mb-8">Add Item +</button>
         </div>
+        </div >
 
     )
 }
