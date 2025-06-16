@@ -60,6 +60,7 @@ public class ListController : ControllerBase
     }
 
     [HttpGet("Me")]
+    [Authorize]
     public IActionResult GetMyLists()
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -105,6 +106,7 @@ public class ListController : ControllerBase
     }
 
     [HttpGet("Me/{id}")]
+    [Authorize]
     public IActionResult GetMyListById(int id)
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
