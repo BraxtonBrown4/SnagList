@@ -14,16 +14,22 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
 
 
         {loggedInUser ? (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setOpen(false);
-              logout().then(() => setLoggedInUser(null));
-            }}
-            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-semibold transition"
-          >
-            Logout
-          </button>
+          <>
+            <RRNavLink to="/My-Lists"
+              className="text-2xl font-bold tracking-wide hover:text-gray-300">
+              My Lists
+            </RRNavLink>
+            
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                logout().then(() => setLoggedInUser(null));
+              }}
+              className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-semibold transition">
+              Logout
+            </button>
+          </>
         ) : (
           <RRNavLink to="/login">
             <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-semibold transition text-white">
