@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getMyListById, getPublicListById } from "../managers/listManager"
+import { DeleteModal } from "../re-usable-components/DeleteModal"
+import { deleteItemById } from "../managers/itemManager"
 
 export const ListDetails = ({ loggedInUser }) => {
     const { listId, isPublic } = useParams()
+    const [deleteId, setDeleteId] = useState(0)
     const [list, setList] = useState({})
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (listId > 0 && isPublic && loggedInUser.id > 0) {
+        if (listId > 0 && isPublic && loggedInUser.id > 0 && deleteId == 0) {
 
             const parsedListId = parseInt(listId)
             const boolIsPublic = isPublic == "true" ? true : false
@@ -25,7 +28,7 @@ export const ListDetails = ({ loggedInUser }) => {
                 })
             }
         }
-    }, [loggedInUser, listId, isPublic])
+    }, [loggedInUser, listId, isPublic, deleteId])
 
     return (list.id &&
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-50 p-6 overflow-auto">
@@ -60,15 +63,17 @@ export const ListDetails = ({ loggedInUser }) => {
                                 <button className="text-blue-600 hover:bg-blue-50 font-medium px-3 py-1 rounded-lg text-sm transition">
                                     Edit
                                 </button>
-                                <button className="text-red-600 hover:bg-red-50 font-medium px-3 py-1 rounded-lg text-sm transition">
+                                <button onClick={() => {setDeleteId(i.id)}} className="text-red-600 hover:bg-red-50 font-medium px-3 py-1 rounded-lg text-sm transition">
                                     Delete
                                 </button>
                             </div>
                         </div>
                     ))}
+                </div>
+                <button className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>
             </div>
-            <button className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>
-        </div>
+
+            <DeleteModal deleteByIdFunc={deleteItemById} deleteId={deleteId} setDeleteId={setDeleteId}/>
         </div >
 
     )
