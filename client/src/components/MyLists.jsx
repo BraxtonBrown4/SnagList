@@ -59,7 +59,7 @@ export const MyLists = ({ loggedInUser }) => {
                 ))
             )}
 
-            <DeleteModal deleteFunc={deleteListById} deleteId={deleteId} setDeleteId={setDeleteId} />
+            <DeleteModal deleteByIdFunc={deleteListById} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div>
     );
 
