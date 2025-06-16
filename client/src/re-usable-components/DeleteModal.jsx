@@ -21,6 +21,5 @@ export const DeleteModal = ({ deleteByIdFunc, deleteId, setDeleteId }) => {
                 </div>
             </div>
         </div>
-
     )
 }
