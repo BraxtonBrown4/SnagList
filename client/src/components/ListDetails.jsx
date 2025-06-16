@@ -41,7 +41,7 @@ export const ListDetails = ({ loggedInUser }) => {
                     </h3>
                 </div>
 
-                <div className="px-8 mb-6">
+                <div className="px-8 mb-6 flex flex-wrap justify-center">
                     {list.tags?.map((t) => (
                         <p key={t.id} className="text-gray-600 text-sm font-medium inline-block mr-3 mb-2">
                             #{t.name}
@@ -67,7 +67,7 @@ export const ListDetails = ({ loggedInUser }) => {
                         </div>
                     ))}
             </div>
-            <button className="mb-8">Add Item +</button>
+            <button className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>
         </div>
         </div >
 
