@@ -15,7 +15,7 @@ export const getMyLists = () => {
 export const deleteListById = (listId) => {
     return fetch(`${_apiUrl}/${listId}`, {
         method: "DELETE"
-    }).then(res => res.json())
+    })
 }
 
 export const getPublicListById = (listId) => {
