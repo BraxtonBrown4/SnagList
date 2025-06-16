@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { getMyListById, getPublicListById } from "../managers/listManager"
 import { DeleteModal } from "../re-usable-components/DeleteModal"
 import { deleteItemById } from "../managers/itemManager"
+import { AddItemModal } from "../re-usable-components/AddItemModal"
 
 export const ListDetails = ({ loggedInUser }) => {
     const { listId, isPublic } = useParams()
@@ -10,13 +11,14 @@ export const ListDetails = ({ loggedInUser }) => {
     const [list, setList] = useState({})
     const navigate = useNavigate()
     const [usersList, setUsersList] = useState(false)
+    const [addItemModalOpen, setAddItemModalOpen] = useState(false)
 
     const isUsersList = (list) => {
         setUsersList(list.userProfileId == loggedInUser.id)
     }
 
     useEffect(() => {
-        if (listId > 0 && isPublic && loggedInUser.id > 0 && deleteId == 0) {
+        if (listId > 0 && isPublic && loggedInUser.id > 0 && deleteId == 0 && addItemModalOpen == false) {
 
             const parsedListId = parseInt(listId)
             const boolIsPublic = isPublic == "true" ? true : false
@@ -65,7 +67,7 @@ export const ListDetails = ({ loggedInUser }) => {
                     {list.items?.map((i) => (
                         <div key={i.id} className="w-full flex flex-col sm:flex-row items-center justify-between px-4 py-2">
                             <p className="text-gray-600 text-sm font-medium text-center sm:absolute sm:left-1/2 sm:-translate-x-1/2 sm:transform">
-                                {i.name}
+                                {`${i.name} $${i.price}`}
                             </p>
 
                             {usersList &&
@@ -80,9 +82,9 @@ export const ListDetails = ({ loggedInUser }) => {
                         </div>
                     ))}
                 </div>
-                {usersList &&<button className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>}
+                {usersList &&<button onClick={() => {setAddItemModalOpen(true)}} className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>}
             </div>
-
+            <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} listId={list.id}/>
             <DeleteModal deleteByIdFunc={deleteItemById} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div >
 
