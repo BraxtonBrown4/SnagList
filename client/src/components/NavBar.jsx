@@ -8,12 +8,10 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
   return (
     <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <RRNavLink
-          to="/"
-          className="text-2xl font-bold tracking-wide hover:text-gray-300"
-        >
+        <h2 className="text-2xl font-bold tracking-wide text-white">
           SnagList
-        </RRNavLink>
+        </h2>
+
 
         {loggedInUser ? (
           <button
