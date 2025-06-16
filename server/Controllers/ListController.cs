@@ -55,7 +55,7 @@ public class ListController : ControllerBase
     }
 
     [HttpGet("Me")]
-    public IActionResult Get()
+    public IActionResult GetMyLists()
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
@@ -72,5 +72,30 @@ public class ListController : ControllerBase
             return Ok(publicLists);
         }
         return NotFound();
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+
+    public IActionResult Delete(int id)
+    {
+        var list = _db.Lists.FirstOrDefault(l => l.Id == id);
+        if (list == null)
+        {
+            return NotFound();
+        }
+
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        if (profile == null || list.UserProfileId != profile.Id)
+        {
+            return Forbid();
+        }
+
+        _db.Lists.Remove(list);
+        _db.SaveChanges();
+
+        return NoContent();
     }
 }
