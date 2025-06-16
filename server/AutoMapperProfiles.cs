@@ -18,7 +18,7 @@ public class AutoMapperProfiles : Profile
         CreateMap<UserProfile, DefaultUserProfileDTO>().ReverseMap();
         CreateMap<ListTag, DefaultListTagDTO>().ReverseMap();
         CreateMap<Tag, DefaultTagDTO>().ReverseMap();
+        CreateMap<Item, DefaultItemDTO>().ReverseMap();
         CreateMap<List, DefaultListDTO>().ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.ListTags.Select(lt => lt.Tag))).ReverseMap();
-
     }
 }

@@ -94,7 +94,6 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("Me")]
-    [Authorize]
     public IActionResult Me()
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -105,6 +104,7 @@ public class AuthController : ControllerBase
             var userDto = new UserProfileDTO
             {
                 Id = profile.Id,
+                ProfilePic = profile.ProfilePic,
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
                 Address = profile.Address,
