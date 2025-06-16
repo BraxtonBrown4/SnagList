@@ -1,4 +1,4 @@
-const _apiUrl = "/api/lists";
+const _apiUrl = "/api/Lists";
 
 export const getPublicListsByUserId = (userId) => {
     return fetch(`${_apiUrl}/${userId}`).then(res => res.json())
