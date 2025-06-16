@@ -19,7 +19,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
         />
 
         <Route
-          path="/Lists/:listId"
+          path="/Lists/:listId/:public"
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
               <ListDetails loggedInUser={loggedInUser}/>
