@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { getMyListById } from "../managers/listManager"
+import { getMyListById, getPublicListById } from "../managers/listManager"
 
 export const ListDetails = ({ loggedInUser }) => {
-    const { listId, userId } = useParams()
+    const { listId, isPublic } = useParams()
     const [list, setList] = useState({})
 
     useEffect(() => {
-        if (listId > 0 && loggedInUser.id > 0) {
+        if (listId > 0 && isPublic && loggedInUser.id > 0) {
 
-            getMyListById(listId).then(setList)
+            const parsedListId = parseInt(listId)
+            const boolIsPublic = isPublic == "true" ? true : false
+
+            if (boolIsPublic) {
+                getPublicListById(parsedListId).then(setList)
+            } else {
+                getMyListById(parsedListId).then(setList)
+            }
         }
-    }, [loggedInUser, listId])
+    }, [loggedInUser, listId, isPublic])
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-50 p-6 overflow-auto">
