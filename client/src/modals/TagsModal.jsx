@@ -11,7 +11,8 @@ export const TagModal = ({ isModalOpen, setIsModalOpen, tagArr, setTagArr }) => 
 
     const handleChange = (e, tag) => {
         if (e.target.checked){
-            setLocalTagArr([...localTagArr, tag])
+            const mutable = localTagArr.filter(t => t.id !== tag.id)
+            setLocalTagArr([...mutable, tag])
         } else {
             const mutable = localTagArr.filter(t => t.id !== tag.id)
             setLocalTagArr(mutable)
