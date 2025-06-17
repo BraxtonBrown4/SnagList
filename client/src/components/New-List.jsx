@@ -1,13 +1,18 @@
 import { useState } from "react"
 import { TagModal } from "../modals/TagsModal"
 import { AddItemModal } from "../modals/AddItemModal"
+import { CreateList } from "../managers/listManager"
+import { createItem } from "../managers/itemManager"
+import { useNavigate } from "react-router-dom";
+import { CreateListTag } from "../managers/listTagManager"
 
 export const NewList = ({ loggedInUser }) => {
     const [newList, setNewList] = useState({ userProfileId: loggedInUser.id, isPublic: false })
     const [tagsModalOpen, setTagsModalOpen] = useState(false)
     const [tagArr, setTagArr] = useState([])
-    const [addItemModalOpen, setAddItemModalOpen] = useState(false);
-    const [newItemArr, setNewItemArr] = useState([]);
+    const [addItemModalOpen, setAddItemModalOpen] = useState(false)
+    const [newItemArr, setNewItemArr] = useState([])
+    const navigate = useNavigate()
 
 
     const handleChange = (e) => {
@@ -15,8 +20,15 @@ export const NewList = ({ loggedInUser }) => {
         setNewList({ ...newList, [name]: type === "checkbox" ? checked : value })
     }
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        CreateList(newList).then((newListRes) => {
+            const itemPromises = newItemArr.map(i => { createItem({ ...i, listId: newListRes.id }) })
+            const tagPromises = tagArr.map(t => { CreateListTag({ tagId: t.id, listId: newListRes.id }) })
+            Promise.all([...itemPromises, ...tagPromises]).then(() => {
+                navigate(`/Lists/${newListRes.id}/${newListRes.isPublic}`);
+            })
+        })
     }
 
     return (
@@ -64,7 +76,7 @@ export const NewList = ({ loggedInUser }) => {
                         </button>
                     </div>
 
-                    <div className="flex justify-end pt-3">
+                    <div className="flex justify-center pt-3">
                         <button
                             type="submit"
                             className="px-4 py-2 text-sm font-medium text-green-600 hover:bg-green-50 rounded-lg transition"
