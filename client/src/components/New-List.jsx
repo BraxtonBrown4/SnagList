@@ -1,7 +1,10 @@
 import { useState } from "react"
+import { TagModal } from "../modals/TagsModal"
 
 export const NewList = ({ loggedInUser }) => {
     const [newList, setNewList] = useState({ userProfileId: loggedInUser.id, isPublic: false })
+    const [tagsModalOpen, setTagsModalOpen] = useState(false)
+    const [tagList, setTagList] = useState([])
 
 
     const handleChange = (e) => {
@@ -39,6 +42,8 @@ export const NewList = ({ loggedInUser }) => {
                             onChange={handleChange} />
                     </div>
 
+                    <button onClick={() => {setTagsModalOpen(true)}} className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Tags</button>
+
                     <div className="flex justify-end space-x-3 pt-3">
                         <button
                             type="submit"
@@ -47,6 +52,8 @@ export const NewList = ({ loggedInUser }) => {
                         </button>
                     </div>
                 </form>
+                {tagList?.map(t => <p key={t.id} className="text-gray-600 text-sm">#{t.name}</p>)}
+                <TagModal isModalOpen={tagsModalOpen} setIsModalOpen={setTagsModalOpen} tagList={tagList} setTagList={setTagList}/>
             </div>
         </div>
     )
