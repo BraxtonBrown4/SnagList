@@ -1,8 +1,8 @@
 
-export const DeleteModal = ({ deleteFunc, deleteId, setDeleteId }) => {
+export const DeleteModal = ({ deleteByIdFunc, deleteId, setDeleteId }) => {
 
     const handleDelete = () => {
-        deleteFunc(deleteId).then(() => {setDeleteId(0)})
+        deleteByIdFunc(deleteId).then(() => {setDeleteId(0)})
     }
     return (deleteId > 0 &&
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
@@ -21,6 +21,5 @@ export const DeleteModal = ({ deleteFunc, deleteId, setDeleteId }) => {
                 </div>
             </div>
         </div>
-
     )
 }

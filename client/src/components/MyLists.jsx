@@ -12,8 +12,10 @@ export const MyLists = ({ loggedInUser }) => {
 
 
     useEffect(() => {
-        getMyLists().then(setLists)
-    }, [loggedInUser])
+        if (deleteId == 0) {
+            getMyLists().then(setLists)
+        }
+    }, [loggedInUser, deleteId])
 
 
     return (
@@ -25,7 +27,7 @@ export const MyLists = ({ loggedInUser }) => {
                     <div
                         key={l.id}
                         className="max-w-sm mx-auto my-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
-                        <div onClick={() => {navigate(`/Lists/${l.id}`)}}>
+                        <div onClick={() => {navigate(`/Lists/${l.id}/${l.isPublic}`)}}>
                             
                             <div className="p-6">
                                 <h2 className="text-xl font-medium text-gray-900 mb-2">{l.name}</h2>
@@ -59,7 +61,7 @@ export const MyLists = ({ loggedInUser }) => {
                 ))
             )}
 
-            <DeleteModal deleteFunc={deleteListById} deleteId={deleteId} setDeleteId={setDeleteId} />
+            <DeleteModal deleteByIdFunc={deleteListById} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div>
     );
 

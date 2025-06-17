@@ -13,7 +13,15 @@ export const getMyLists = () => {
 }
 
 export const deleteListById = (listId) => {
-    return fetch(`${_apiUrl}/Me/${listId}`, {
+    return fetch(`${_apiUrl}/${listId}`, {
         method: "DELETE"
-    }).then(res => res.json())
+    })
+}
+
+export const getPublicListById = (listId) => {
+    return fetch(`${_apiUrl}/Public/${listId}`).then(res => res.json())
+}
+
+export const getMyListById = (listId) => {
+    return fetch(`${_apiUrl}/Me/${listId}`).then(res => res.json())
 }
