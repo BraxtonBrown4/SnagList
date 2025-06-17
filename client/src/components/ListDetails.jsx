@@ -21,7 +21,7 @@ export const ListDetails = ({ loggedInUser }) => {
     }
 
     useEffect(() => {
-        if (listId > 0 && isPublic && loggedInUser.id > 0 && deleteId == 0 && newItemArr == null && editItem == null) {
+        if (listId > 0 && isPublic !== "" && loggedInUser.id > 0 && deleteId == 0 && newItemArr == null && editItem == null) {
 
             const parsedListId = parseInt(listId)
             const boolIsPublic = isPublic == "true" ? true : false
@@ -34,7 +34,7 @@ export const ListDetails = ({ loggedInUser }) => {
             } else {
                 getMyListById(parsedListId).then((res) => {
                     if (!res.id) {
-                        navigate("/*")
+                        navigate("/Unauthorized")
                     } else {
                         setList(res)
                         isUsersList(res)
