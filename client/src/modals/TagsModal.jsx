@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { getAllTags } from "../managers/tagManager"
 
-export const TagModal = ({ isModalOpen, setIsModalOpen, tagList, setTagList }) => {
+export const TagModal = ({ isModalOpen, setIsModalOpen, tagArr, setTagArr }) => {
     const [allTags, setAllTags] = useState([])
-    const [localTagList, setLocalTagList] = useState([...tagList])
+    const [localTagArr, setLocalTagArr] = useState([...tagArr])
 
     useEffect(() => {
         getAllTags().then(setAllTags)
@@ -11,10 +11,10 @@ export const TagModal = ({ isModalOpen, setIsModalOpen, tagList, setTagList }) =
 
     const handleChange = (e, tag) => {
         if (e.target.checked){
-            setLocalTagList([...localTagList, tag])
+            setLocalTagArr([...localTagArr, tag])
         } else {
-            const mutable = localTagList.filter(t => t.id !== tag.id)
-            setLocalTagList(mutable)
+            const mutable = localTagArr.filter(t => t.id !== tag.id)
+            setLocalTagArr(mutable)
         }
     }
 
@@ -28,20 +28,20 @@ export const TagModal = ({ isModalOpen, setIsModalOpen, tagList, setTagList }) =
                         <input
                             type="checkbox"
                             className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            defaultValue={localTagList.some(tag => tag.id == t.id)}
-                            defaultChecked={localTagList.some(tag => tag.id == t.id)}
+                            defaultValue={localTagArr.some(tag => tag.id == t.id)}
+                            defaultChecked={localTagArr.some(tag => tag.id == t.id)}
                             onChange={(e) => {handleChange(e, t)}} />
                     </div>
                     )}
                 </div>
                 <div className="flex justify-end space-x-3 pt-3">
                     <button
-                        onClick={() => {setIsModalOpen(false); setLocalTagList([])}}
+                        onClick={() => {setIsModalOpen(false); setLocalTagArr([])}}
                         className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition">
                         Cancel
                     </button>
                     <button
-                        onClick={() => {setIsModalOpen(false); setTagList(localTagList)}}
+                        onClick={() => {setIsModalOpen(false); setTagArr(localTagArr)}}
                         className="px-4 py-2 text-sm font-medium text-green-600 hover:bg-green-50 rounded-lg transition">
                         Submit
                     </button>
