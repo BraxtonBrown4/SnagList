@@ -6,7 +6,8 @@ export const NewList = ({ loggedInUser }) => {
     const [newList, setNewList] = useState({ userProfileId: loggedInUser.id, isPublic: false })
     const [tagsModalOpen, setTagsModalOpen] = useState(false)
     const [tagArr, setTagArr] = useState([])
-
+    const [addItemModalOpen, setAddItemModalOpen] = useState(false);
+    const [newItemArr, setNewItemArr] = useState([]);
 
 
     const handleChange = (e) => {
@@ -19,44 +20,82 @@ export const NewList = ({ loggedInUser }) => {
     }
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center px-4">
-            <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">Create A List</h2>
-                <form action={handleSubmit}>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-50 px-4 py-8 overflow-auto">
+            <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 border border-gray-200">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Create A List</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
 
-                    <div className="my-4 flex flex-row justify-center">
-                        <label className="mr-2 flex items-center justify-center block text-gray-700 font-medium">Is Public</label>
+                    <div className="flex justify-center items-center space-x-3">
+                        <label className="text-gray-700 font-medium">Is Public</label>
                         <input
                             name="isPublic"
                             type="checkbox"
-                            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            defaultValue={false}
-                            onChange={handleChange} />
+                            className="h-5 w-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            defaultChecked={false}
+                            onChange={handleChange}
+                        />
                     </div>
 
-                    <div className="my-4 flex flex-row">
-                        <label className="flex items-center justify-center w-4/12 block text-gray-700 font-medium">List Name:</label>
+                    <div className="flex items-center space-x-4">
+                        <label className="w-1/3 text-gray-700 font-medium">List Name:</label>
                         <input
                             name="name"
                             type="text"
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-2/3 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             required
-                            onChange={handleChange} />
+                            onChange={handleChange}
+                        />
                     </div>
 
-                    <button onClick={() => { setTagsModalOpen(true) }} className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Tags</button>
+                    <div className="flex justify-between">
+                        <button
+                            type="button"
+                            onClick={() => { setTagsModalOpen(true) }}
+                            className="text-green-600 hover:bg-green-50 font-medium px-4 py-2 rounded-lg text-sm transition"
+                        >
+                            Tags
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => { setAddItemModalOpen(true) }}
+                            className="text-green-600 hover:bg-green-50 font-medium px-4 py-2 rounded-lg text-sm transition"
+                        >
+                            Items
+                        </button>
+                    </div>
 
-                    <div className="flex justify-end space-x-3 pt-3">
+                    <div className="flex justify-end pt-3">
                         <button
                             type="submit"
-                            className="px-4 py-2 text-sm font-medium text-green-600 hover:bg-green-50 rounded-lg transition">
+                            className="px-4 py-2 text-sm font-medium text-green-600 hover:bg-green-50 rounded-lg transition"
+                        >
                             Create
                         </button>
                     </div>
                 </form>
-                {tagArr?.map(t => <p key={t.id} className="text-gray-600 text-sm">#{t.name}</p>)}
+
+                <div className="mt-6">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-1">Tags</h3>
+                    <div className="flex flex-wrap gap-2">
+                        {tagArr?.map(t => (
+                            <p key={t.id} className="text-sm font-medium text-gray-700 bg-gray-100 px-2 py-1 rounded-md">#{t.name}</p>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mt-4">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-1">Items</h3>
+                    <div className="space-y-1">
+                        {newItemArr?.map(i => (
+                            <p key={i.id} className="text-sm font-medium text-gray-700">{`${i.name} $${i.price}`}</p>
+                        ))}
+                    </div>
+                </div>
+
                 <TagModal isModalOpen={tagsModalOpen} setIsModalOpen={setTagsModalOpen} tagArr={tagArr} setTagArr={setTagArr} />
+                <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} newItemArr={newItemArr} setNewItemArr={setNewItemArr} />
             </div>
         </div>
+
     )
 }
