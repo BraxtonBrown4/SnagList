@@ -25,3 +25,13 @@ export const getPublicListById = (listId) => {
 export const getMyListById = (listId) => {
     return fetch(`${_apiUrl}/Me/${listId}`).then(res => res.json())
 }
+
+export const CreateList = (list) => {
+    return fetch(_apiUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(list)
+    }).then(res => res.json());
+}

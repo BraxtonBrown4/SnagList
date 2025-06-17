@@ -127,4 +127,18 @@ public class ListController : ControllerBase
         }
         return NotFound();
     }
+
+    [HttpPost]
+    [Authorize]
+
+     public IActionResult Post(ListCreateDTO newListDTO)
+    {
+        List newList = _mapper.Map<List>(newListDTO);
+        
+        _db.Lists.Add(newList);
+        _db.SaveChanges();
+
+        DefaultListDTO createdListDTO = _mapper.Map<DefaultListDTO>(newList);
+        return Created($"api/Lists/{newList.Id}", createdListDTO);
+    }
 }
