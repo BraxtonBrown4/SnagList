@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getMyListById, getPublicListById } from "../managers/listManager"
-import { DeleteModal } from "../re-usable-components/DeleteModal"
+import { DeleteModal } from "../modals/DeleteModal"
 import { deleteItemById } from "../managers/itemManager"
-import { AddItemModal } from "../re-usable-components/AddItemModal"
-import { EditItemModal } from "../re-usable-components/EditItemModal"
+import { AddItemModal } from "../modals/AddItemModal"
+import { EditItemModal } from "../modals/EditItemModal"
 
 export const ListDetails = ({ loggedInUser }) => {
     const { listId, isPublic } = useParams()

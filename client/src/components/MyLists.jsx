@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { deleteListById, getMyLists } from "../managers/listManager"
-import { DeleteModal } from "../re-usable-components/DeleteModal"
+import { DeleteModal } from "../modals/DeleteModal"
 import { useNavigate } from "react-router-dom";
 
 
