@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { createItem } from "../managers/itemManager"
 
 export const AddItemModal = ({ isModalOpen, setIsModalOpen, newItemArr, setNewItemArr }) => {
     const [item, setItem] = useState({})

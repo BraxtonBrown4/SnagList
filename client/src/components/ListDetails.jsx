@@ -95,7 +95,7 @@ export const ListDetails = ({ loggedInUser }) => {
             </div>
 
             <EditItemModal editItem={editItem} setEditItem={setEditItem}/>
-            <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} listId={list.id} newItemArr={newItemArr} setNewItemArr={setNewItemArr}/>
+            <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} newItemArr={newItemArr} setNewItemArr={setNewItemArr}/>
             <DeleteModal deleteByIdFunc={deleteItemById} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div >
 
