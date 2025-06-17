@@ -4,6 +4,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import { MyLists } from "./MyLists";
 import { ListDetails } from "./ListDetails";
+import { NewList } from "./New-List";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -23,6 +24,15 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
               <ListDetails loggedInUser={loggedInUser}/>
+            </AuthorizedRoute>
+          }
+        />
+
+        <Route
+          path="/New-List"
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+              <NewList loggedInUser={loggedInUser}/>
             </AuthorizedRoute>
           }
         />
