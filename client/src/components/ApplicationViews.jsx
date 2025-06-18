@@ -5,6 +5,7 @@ import Register from "./auth/Register";
 import { MyLists } from "./MyLists";
 import { ListDetails } from "./ListDetails";
 import { NewList } from "./New-List";
+import { EditList } from "./EditList";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -24,6 +25,15 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
               <ListDetails loggedInUser={loggedInUser}/>
+            </AuthorizedRoute>
+          }
+        />
+
+        <Route
+          path="/Edit/:editId"
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+              <EditList loggedInUser={loggedInUser}/>
             </AuthorizedRoute>
           }
         />
