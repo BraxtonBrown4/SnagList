@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getMyListById, getPublicListById } from "../managers/listManager"
-import { DeleteModal } from "../re-usable-components/DeleteModal"
-import { deleteItemById } from "../managers/itemManager"
-import { AddItemModal } from "../re-usable-components/AddItemModal"
-import { EditItemModal } from "../re-usable-components/EditItemModal"
+import { DeleteModal } from "../modals/DeleteModal"
+import { createItem, deleteItemById } from "../managers/itemManager"
+import { AddItemModal } from "../modals/AddItemModal"
+import { EditItemModal } from "../modals/EditItemModal"
 
 export const ListDetails = ({ loggedInUser }) => {
     const { listId, isPublic } = useParams()
@@ -14,13 +14,14 @@ export const ListDetails = ({ loggedInUser }) => {
     const [usersList, setUsersList] = useState(false)
     const [addItemModalOpen, setAddItemModalOpen] = useState(false)
     const [editItem, setEditItem] = useState(null)
+    const [newItemArr, setNewItemArr] = useState(null)
 
     const isUsersList = (list) => {
         setUsersList(list.userProfileId == loggedInUser.id)
     }
 
     useEffect(() => {
-        if (listId > 0 && isPublic && loggedInUser.id > 0 && deleteId == 0 && addItemModalOpen == false && editItem == null) {
+        if (listId > 0 && isPublic !== "" && loggedInUser.id > 0 && deleteId == 0 && newItemArr == null && editItem == null) {
 
             const parsedListId = parseInt(listId)
             const boolIsPublic = isPublic == "true" ? true : false
@@ -33,7 +34,7 @@ export const ListDetails = ({ loggedInUser }) => {
             } else {
                 getMyListById(parsedListId).then((res) => {
                     if (!res.id) {
-                        navigate("/*")
+                        navigate("/Unauthorized")
                     } else {
                         setList(res)
                         isUsersList(res)
@@ -41,7 +42,13 @@ export const ListDetails = ({ loggedInUser }) => {
                 })
             }
         }
-    }, [loggedInUser, listId, isPublic, deleteId])
+    }, [loggedInUser, listId, isPublic, deleteId, editItem, newItemArr])
+
+    useEffect(() => {
+        if (newItemArr) {
+            createItem({...newItemArr[0], ListId: listId}).then(() => setNewItemArr(null))
+        }
+    }, [newItemArr])
 
     return (list.id &&
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-50 p-6 overflow-auto">
@@ -88,7 +95,7 @@ export const ListDetails = ({ loggedInUser }) => {
             </div>
 
             <EditItemModal editItem={editItem} setEditItem={setEditItem}/>
-            <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} listId={list.id}/>
+            <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} newItemArr={newItemArr} setNewItemArr={setNewItemArr}/>
             <DeleteModal deleteByIdFunc={deleteItemById} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div >
 
