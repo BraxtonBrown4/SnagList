@@ -24,6 +24,11 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
               className="text-2xl font-bold tracking-wide hover:text-gray-300">
               New List
             </RRNavLink>
+
+            <RRNavLink to="/Tags"
+              className="text-2xl font-bold tracking-wide hover:text-gray-300">
+              Tags
+            </RRNavLink>
             
             <button
               onClick={(e) => {
