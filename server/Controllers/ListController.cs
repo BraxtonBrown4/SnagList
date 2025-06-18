@@ -47,7 +47,7 @@ public class ListController : ControllerBase
         .Include(l => l.ListTags).ThenInclude(l => l.Tag)
         .Include(l => l.UserProfile)
         .Include(l => l.Items)
-        .FirstOrDefault(l => l.IsPublic);
+        .FirstOrDefault(l => l.IsPublic && l.Id == id);
 
         if (list == null)
         {
