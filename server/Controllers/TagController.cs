@@ -32,4 +32,22 @@ public class TagController : ControllerBase
 
         return Ok(tags);
     }
+
+    [HttpPost]
+    [Authorize]
+    public IActionResult Post(DefaultTagDTO newTagDTO)
+    {
+        if (_db.Tags.Any(t => t.Name == newTagDTO.Name))
+        {
+            return BadRequest();
+        }
+
+        Tag newTag = _mapper.Map<Tag>(newTagDTO);
+
+        _db.Tags.Add(newTag);
+        _db.SaveChanges();
+
+        DefaultTagDTO createdTagDTO = _mapper.Map<DefaultTagDTO>(newTag);
+        return Created($"api/Tags/{newTag.Id}", createdTagDTO);
+    }
 }
