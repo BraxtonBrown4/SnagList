@@ -30,7 +30,7 @@ export const ListDetails = ({ loggedInUser }) => {
                 getPublicListById(parsedListId).then((res) => {
                     setList(res)
                     isUsersList(res)
-            })
+                })
             } else {
                 getMyListById(parsedListId).then((res) => {
                     if (!res.id) {
@@ -46,7 +46,7 @@ export const ListDetails = ({ loggedInUser }) => {
 
     useEffect(() => {
         if (newItemArr) {
-            createItem({...newItemArr[0], ListId: listId}).then(() => setNewItemArr(null))
+            createItem({ ...newItemArr[0], ListId: listId }).then(() => setNewItemArr(null))
         }
     }, [newItemArr])
 
@@ -58,6 +58,10 @@ export const ListDetails = ({ loggedInUser }) => {
                 <div className="p-8 text-center">
 
                     <h2 className="text-3xl font-medium text-gray-900 mb-4">{list.name}</h2>
+
+                    <p className="text-sm italic text-gray-500 mb-1">
+                        by {list.userProfile.userName}
+                    </p>
 
                     <h3 className="text-gray-700 mb-6 text-lg">
                         Public: {list.isPublic ? "True" : "False"}
@@ -81,7 +85,7 @@ export const ListDetails = ({ loggedInUser }) => {
 
                             {usersList &&
                                 <div className="mt-2 sm:mt-0 sm:ml-auto flex gap-2">
-                                    <button onClick={() => {setEditItem(i)}} className="text-blue-600 hover:bg-blue-50 font-medium px-3 py-1 rounded-lg text-sm transition">
+                                    <button onClick={() => { setEditItem(i) }} className="text-blue-600 hover:bg-blue-50 font-medium px-3 py-1 rounded-lg text-sm transition">
                                         Edit
                                     </button>
                                     <button onClick={() => { setDeleteId(i.id) }} className="text-red-600 hover:bg-red-50 font-medium px-3 py-1 rounded-lg text-sm transition">
@@ -91,11 +95,11 @@ export const ListDetails = ({ loggedInUser }) => {
                         </div>
                     ))}
                 </div>
-                {usersList &&<button onClick={() => {setAddItemModalOpen(true)}} className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>}
+                {usersList && <button onClick={() => { setAddItemModalOpen(true) }} className="text-green-600 hover:bg-green-50 font-medium px-3 py-1 rounded-lg text-lg transition mb-8">Add Item +</button>}
             </div>
 
-            <EditItemModal editItem={editItem} setEditItem={setEditItem}/>
-            <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} newItemArr={newItemArr} setNewItemArr={setNewItemArr}/>
+            <EditItemModal editItem={editItem} setEditItem={setEditItem} />
+            <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} newItemArr={newItemArr} setNewItemArr={setNewItemArr} />
             <DeleteModal deleteByIdFunc={deleteItemById} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div >
 
