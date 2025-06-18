@@ -7,6 +7,7 @@ import { ListDetails } from "./ListDetails";
 import { NewList } from "./New-List";
 import { EditList } from "./EditList";
 import { Tags } from "./Tags";
+import { AllLists } from "./AllLists";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -17,6 +18,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
               <MyLists loggedInUser={loggedInUser} />
+            </AuthorizedRoute>
+          }
+        />
+        <Route
+          path="/All-Lists"
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+              <AllLists loggedInUser={loggedInUser} />
             </AuthorizedRoute>
           }
         />
