@@ -20,6 +20,11 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
               My Lists
             </RRNavLink>
 
+            <RRNavLink to="/All-Lists"
+              className="text-2xl font-bold tracking-wide hover:text-gray-300">
+              All Lists
+            </RRNavLink>
+
             <RRNavLink to="/New-List"
               className="text-2xl font-bold tracking-wide hover:text-gray-300">
               New List
