@@ -23,12 +23,14 @@ export const NewList = ({ loggedInUser }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         CreateList(newList).then((newListRes) => {
-            const itemPromises = newItemArr.map(i => { createItem({ ...i, listId: newListRes.id }) })
-            const tagPromises = tagArr.map(t => { CreateListTag({ tagId: t.id, listId: newListRes.id }) })
+            const itemPromises = newItemArr.map(i => createItem({ ...i, listId: newListRes.id }))
+
+            const tagPromises = tagArr.map(t => CreateListTag({ tagId: t.id, listId: newListRes.id }))
+
             Promise.all([...itemPromises, ...tagPromises]).then(() => {
                 navigate(`/Lists/${newListRes.id}/${newListRes.isPublic}`);
-            })
-        })
+            });
+        });
     }
 
     return (
