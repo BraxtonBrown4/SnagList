@@ -131,14 +131,60 @@ public class ListController : ControllerBase
     [HttpPost]
     [Authorize]
 
-     public IActionResult Post(ListCreateDTO newListDTO)
+    public IActionResult Post(ListCreateDTO newListDTO)
     {
         List newList = _mapper.Map<List>(newListDTO);
-        
+
         _db.Lists.Add(newList);
         _db.SaveChanges();
 
         DefaultListDTO createdListDTO = _mapper.Map<DefaultListDTO>(newList);
         return Created($"api/Lists/{newList.Id}", createdListDTO);
+    }
+
+    [HttpPut("{id}")]
+    [Authorize]
+
+    public IActionResult Put(int id, DefaultListDTO newListDTO)
+    {
+        List list = _db.Lists.Include(l => l.ListTags).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
+
+        if (list == null)
+        {
+            return NotFound();
+        }
+
+        list.IsPublic = newListDTO.IsPublic;
+        list.Name = newListDTO.Name;
+
+        _db.ListTags.RemoveRange(list.ListTags);
+        _db.Items.RemoveRange(list.Items);
+
+        _db.SaveChanges();
+
+        newListDTO.Tags.ForEach(t =>
+        {
+            _db.ListTags.Add(new ListTag
+            {
+                ListId = list.Id,
+                TagId = t.Id
+            });
+        });
+
+        newListDTO.Items.ForEach(i =>
+        {
+            _db.Items.Add(new Item
+            {
+                ListId = list.Id,
+                Name = i.Name,
+                Price = i.Price,
+                TargetPrice = i.TargetPrice,
+                Image = i.Image
+            });
+        });
+
+        _db.SaveChanges();
+        DefaultListDTO updatedListDTO = _mapper.Map<DefaultListDTO>(list);
+        return Ok(updatedListDTO);
     }
 }

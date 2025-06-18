@@ -1,39 +1,49 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { getMyListById, PutList } from "../managers/listManager"
 import { TagModal } from "../modals/TagsModal"
 import { AddItemModal } from "../modals/AddItemModal"
-import { CreateList } from "../managers/listManager"
-import { createItem } from "../managers/itemManager"
-import { useNavigate } from "react-router-dom";
-import { CreateListTag } from "../managers/listTagManager"
 
-export const NewList = ({ loggedInUser }) => {
-    const [newList, setNewList] = useState({ userProfileId: loggedInUser.id, isPublic: false })
-    const [tagsModalOpen, setTagsModalOpen] = useState(false)
+export const EditList = ({ loggedInUser }) => {
+    const { editId } = useParams()
+    const [list, setList] = useState({})
     const [tagArr, setTagArr] = useState([])
-    const [addItemModalOpen, setAddItemModalOpen] = useState(false)
     const [newItemArr, setNewItemArr] = useState([])
+    const [addItemModalOpen, setAddItemModalOpen] = useState(false)
+    const [tagsModalOpen, setTagsModalOpen] = useState(false)
     const navigate = useNavigate()
 
+    useEffect(() => {
+        if (editId > 0) {
+            getMyListById(parseInt(editId))
+            .then((res) => {
+                setList(res)
+                setNewItemArr(res.items)
+                setTagArr(res.tags)
+            })
+        }
+    }, [editId])
 
     const handleChange = (e) => {
         const { name, type, checked, value } = e.target
-        setNewList({ ...newList, [name]: type === "checkbox" ? checked : value })
+        setList({ ...list, [name]: type === "checkbox" ? checked : value })
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        CreateList(newList).then((newListRes) => {
-            const itemPromises = newItemArr.map(i => createItem({ ...i, listId: newListRes.id }))
+        const updatedList = {
+            ...list,
+            tags: [...tagArr],
+            items: [...newItemArr]
+        }
 
-            const tagPromises = tagArr.map(t => CreateListTag({ tagId: t.id, listId: newListRes.id }))
-
-            Promise.all([...itemPromises, ...tagPromises]).then(() => {
-                navigate(`/Lists/${newListRes.id}/${newListRes.isPublic}`);
-            });
-        });
+        PutList(updatedList)
+        .then((res) => {
+             navigate(`/Lists/${res.id}/${res.isPublic}`)
+        })
     }
 
-    return (
+    return (list.id &&
         <div className="fixed inset-0 flex items-center justify-center bg-gray-50 px-4 py-8 overflow-auto">
             <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 border border-gray-200">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Create A List</h2>
@@ -45,7 +55,7 @@ export const NewList = ({ loggedInUser }) => {
                             name="isPublic"
                             type="checkbox"
                             className="h-5 w-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                            defaultChecked={false}
+                            defaultChecked={list.isPublic || false}
                             onChange={handleChange}
                         />
                     </div>
@@ -56,6 +66,7 @@ export const NewList = ({ loggedInUser }) => {
                             name="name"
                             type="text"
                             className="w-2/3 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            value={list.name || ""}
                             required
                             onChange={handleChange}
                         />
@@ -83,7 +94,7 @@ export const NewList = ({ loggedInUser }) => {
                             type="submit"
                             className="px-4 py-2 text-sm font-medium text-green-600 hover:bg-green-50 rounded-lg transition"
                         >
-                            Create
+                            Update
                         </button>
                     </div>
                 </form>
@@ -109,11 +120,9 @@ export const NewList = ({ loggedInUser }) => {
                                     Cancel
                                 </button>
                             </div>
-
                         ))}
                     </div>
                 </div>
-
                 <TagModal isModalOpen={tagsModalOpen} setIsModalOpen={setTagsModalOpen} tagArr={tagArr} setTagArr={setTagArr} />
                 <AddItemModal isModalOpen={addItemModalOpen} setIsModalOpen={setAddItemModalOpen} newItemArr={newItemArr} setNewItemArr={setNewItemArr} />
             </div>

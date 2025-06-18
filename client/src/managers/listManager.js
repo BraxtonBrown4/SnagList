@@ -35,3 +35,13 @@ export const CreateList = (list) => {
         body: JSON.stringify(list)
     }).then(res => res.json());
 }
+
+export const PutList = (list) => {
+    return fetch(`${_apiUrl}/${list.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(list)
+    }).then(res => res.json());
+}

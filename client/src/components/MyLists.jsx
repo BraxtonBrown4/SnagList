@@ -50,7 +50,7 @@ export const MyLists = ({ loggedInUser }) => {
 
 
                         <div className="px-6 pb-4 flex justify-end space-x-3">
-                            <button className="text-blue-600 hover:bg-blue-50 font-medium px-3 py-1 rounded-lg text-sm transition">
+                            <button onClick={() => {navigate(`/Edit/${l.id}`)}} className="text-blue-600 hover:bg-blue-50 font-medium px-3 py-1 rounded-lg text-sm transition">
                                 Edit
                             </button>
                             <button onClick={() => { setDeleteId(l.id) }} className="text-red-600 hover:bg-red-50 font-medium px-3 py-1 rounded-lg text-sm transition">
