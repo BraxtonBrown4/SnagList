@@ -26,7 +26,7 @@ public class TagController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public IActionResult GetAllTags()
     {
         List<DefaultTagDTO> tags = _db.Tags.ProjectTo<DefaultTagDTO>(_mapper.ConfigurationProvider).ToList();
 
@@ -35,7 +35,7 @@ public class TagController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public IActionResult Post(DefaultTagDTO newTagDTO)
+    public IActionResult PostTag(DefaultTagDTO newTagDTO)
     {
         if (_db.Tags.Any(t => t.Name == newTagDTO.Name))
         {

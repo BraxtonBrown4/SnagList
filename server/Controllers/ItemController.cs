@@ -28,7 +28,7 @@ public class ItemController : ControllerBase
     [HttpDelete("{id}")]
     [Authorize]
 
-    public IActionResult DeleteById(int id)
+    public IActionResult DeleteItem(int id)
     {
         Item item = _db.Items.Include(i => i.List).FirstOrDefault(i => i.Id == id);
 
@@ -53,7 +53,7 @@ public class ItemController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public IActionResult CreateItem(DefaultItemDTO ItemDTO)
+    public IActionResult PostItem(DefaultItemDTO ItemDTO)
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
@@ -66,40 +66,34 @@ public class ItemController : ControllerBase
         List list = _db.Lists.FirstOrDefault(l => l.Id == ItemDTO.ListId && l.UserProfileId == profile.Id);
         if (list == null)
         {
-            return BadRequest("List not found or you do not have access to it.");
+            return BadRequest();
         }
 
         Item item = _mapper.Map<Item>(ItemDTO);
-        item.ListId = list.Id;
 
         _db.Items.Add(item);
         _db.SaveChanges();
 
-        var itemDto = _mapper.Map<DefaultItemDTO>(item);
-        return Created($"api/Items/{itemDto.Id}", itemDto);
+        DefaultItemDTO createdItemDTO = _mapper.Map<DefaultItemDTO>(item);
+        return Created($"api/Items/{createdItemDTO.Id}", createdItemDTO);
     }
 
 
     [HttpPut("{id}")]
     [Authorize]
-    public IActionResult UpdateItem(int id, DefaultItemDTO itemDTO)
+    public IActionResult PutItem(int id, DefaultItemDTO itemDTO)
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
 
-        if (profile == null)
-        {
-            return Forbid();
-        }
+        Item item = _db.Items.Include(i => i.List).FirstOrDefault(i => i.Id == id);
 
-        var item = _db.Items.Include(i => i.List).FirstOrDefault(i => i.Id == id);
-
-        if (item == null)
+         if (item == null)
         {
             return NotFound();
         }
 
-        if (item.List.UserProfileId != profile.Id)
+        if (profile == null || item.List.UserProfileId != profile.Id)
         {
             return Forbid();
         }
@@ -108,7 +102,7 @@ public class ItemController : ControllerBase
 
         _db.SaveChanges();
 
-        var updatedItemDto = _mapper.Map<DefaultItemDTO>(item);
+        DefaultItemDTO updatedItemDto = _mapper.Map<DefaultItemDTO>(item);
         return Ok(updatedItemDto);
     }
 }

@@ -40,28 +40,9 @@ public class ListController : ControllerBase
         return Ok(publicLists);
     }
 
-    [HttpGet("Public/{id}")]
-    public IActionResult GetPublicById(int id)
-    {
-        List list = _db.Lists
-        .Include(l => l.ListTags).ThenInclude(l => l.Tag)
-        .Include(l => l.UserProfile)
-        .Include(l => l.Items)
-        .FirstOrDefault(l => l.IsPublic && l.Id == id);
-
-        if (list == null)
-        {
-            return NotFound();
-        }
-
-        DefaultListDTO publicListDTO = _mapper.Map<DefaultListDTO>(list);
-
-        return Ok(publicListDTO);
-    }
-
-    [HttpGet("Me")]
+    [HttpGet("CurrentUser")]
     [Authorize]
-    public IActionResult GetMyLists()
+    public IActionResult GetCurrentUserLists()
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
@@ -80,10 +61,36 @@ public class ListController : ControllerBase
         return NotFound();
     }
 
+    [HttpGet("{id}")]
+    [Authorize]
+
+    public IActionResult GetListById(int id)
+    {
+        List list = _db.Lists.Include(l => l.ListTags).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
+
+        if (list == null)
+        {
+            return NotFound();
+        }
+
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        if (profile == null || list.UserProfileId != profile.Id && !list.IsPublic)
+        {
+            return Forbid();
+        }
+
+        DefaultListDTO listDTO = _mapper.Map<DefaultListDTO>(list);
+
+        return Ok(listDTO);
+    }
+
+
     [HttpDelete("{id}")]
     [Authorize]
 
-    public IActionResult Delete(int id)
+    public IActionResult DeleteList(int id)
     {
         var list = _db.Lists.FirstOrDefault(l => l.Id == id);
         if (list == null)
@@ -105,33 +112,10 @@ public class ListController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("Me/{id}")]
-    [Authorize]
-    public IActionResult GetMyListById(int id)
-    {
-        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
-
-        List list = _db.Lists
-        .Include(l => l.ListTags).ThenInclude(l => l.Tag)
-        .Include(l => l.UserProfile)
-        .Include(l => l.Items)
-        .FirstOrDefault(l => l.Id == id);
-
-        if (profile != null && list.UserProfileId == profile.Id)
-        {
-
-            DefaultListDTO listDTO = _mapper.Map<DefaultListDTO>(list);
-
-            return Ok(listDTO);
-        }
-        return NotFound();
-    }
-
     [HttpPost]
     [Authorize]
 
-    public IActionResult Post(ListCreateDTO newListDTO)
+    public IActionResult PostList(ListCreateDTO newListDTO)
     {
         List newList = _mapper.Map<List>(newListDTO);
 
@@ -145,7 +129,7 @@ public class ListController : ControllerBase
     [HttpPut("{id}")]
     [Authorize]
 
-    public IActionResult Put(int id, DefaultListDTO newListDTO)
+    public IActionResult PutList(int id, DefaultListDTO newListDTO)
     {
         List list = _db.Lists.Include(l => l.ListTags).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
 
