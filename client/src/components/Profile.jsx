@@ -9,7 +9,7 @@ export const Profile = ({ loggedInUser }) => {
 
     useEffect(() => {
         getUserProfileById(profileId).then(setProfile)
-    }, [])
+    }, [profileId, loggedInUser])
 
     return (profile.id &&
         <div className="max-w-3xl mx-auto px-6 py-10">
