@@ -101,7 +101,7 @@ public class UserProfileController : ControllerBase
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _dbContext.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
 
-        UserProfile userProfile = _dbContext.UserProfiles.Include(u => u.IdentityUser).FirstOrDefault(u => u.Id == id);
+        UserProfile userProfile = _dbContext.UserProfiles.Include(u => u.Lists).Include(u => u.IdentityUser).FirstOrDefault(u => u.Id == id);
 
         if (userProfile == null)
         {

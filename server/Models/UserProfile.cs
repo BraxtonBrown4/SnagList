@@ -16,4 +16,5 @@ public class UserProfile
     public string? Address { get; set; }
     public string IdentityUserId { get; set; }
     public IdentityUser IdentityUser { get; set; }
+    public List<List> Lists { get; set; }
 }
