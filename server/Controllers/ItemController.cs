@@ -66,17 +66,16 @@ public class ItemController : ControllerBase
         List list = _db.Lists.FirstOrDefault(l => l.Id == ItemDTO.ListId && l.UserProfileId == profile.Id);
         if (list == null)
         {
-            return BadRequest("List not found or you do not have access to it.");
+            return BadRequest();
         }
 
         Item item = _mapper.Map<Item>(ItemDTO);
-        item.ListId = list.Id;
 
         _db.Items.Add(item);
         _db.SaveChanges();
 
-        var itemDto = _mapper.Map<DefaultItemDTO>(item);
-        return Created($"api/Items/{itemDto.Id}", itemDto);
+        DefaultItemDTO createdItemDTO = _mapper.Map<DefaultItemDTO>(item);
+        return Created($"api/Items/{createdItemDTO.Id}", createdItemDTO);
     }
 
 
