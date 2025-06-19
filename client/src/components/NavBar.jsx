@@ -34,6 +34,11 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
               className="text-2xl font-bold tracking-wide hover:text-gray-300">
               Tags
             </RRNavLink>
+
+            <RRNavLink to="/Profile"
+              className="text-2xl font-bold tracking-wide hover:text-gray-300">
+              Profile
+            </RRNavLink>
             
             <button
               onClick={(e) => {
