@@ -59,7 +59,9 @@ export const ListDetails = ({ loggedInUser }) => {
 
                     <h2 className="text-3xl font-medium text-gray-900 mb-4">{list.name}</h2>
 
-                    <p className="text-sm italic text-gray-500 mb-1">
+                    <p
+                        onClick={() => navigate(`/Profile/${list.userProfileId}`)}
+                        className="text-sm italic text-blue-600 hover:underline cursor-pointer mb-1">
                         by {list.userProfile.userName}
                     </p>
 

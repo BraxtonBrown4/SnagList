@@ -5,6 +5,8 @@ using SnagList.DTOs;
 using SnagList.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using AutoMapper;
 
 namespace SnagList.Controllers;
 
@@ -13,10 +15,12 @@ namespace SnagList.Controllers;
 public class UserProfileController : ControllerBase
 {
     private SnagListDbContext _dbContext;
+    private IMapper _mapper;
 
-    public UserProfileController(SnagListDbContext context)
+    public UserProfileController(SnagListDbContext context, IMapper mapper)
     {
         _dbContext = context;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -88,5 +92,32 @@ public class UserProfileController : ControllerBase
         _dbContext.UserRoles.Remove(userRole);
         _dbContext.SaveChanges();
         return NoContent();
+    }
+
+    [HttpGet("{id}")]
+    [Authorize]
+    public IActionResult getProfileById(int id)
+    {
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _dbContext.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        UserProfile userProfile = _dbContext.UserProfiles.Include(u => u.Lists).Include(u => u.IdentityUser).FirstOrDefault(u => u.Id == id);
+
+        if (userProfile == null)
+        {
+            return NotFound();
+        }
+
+        if (profile.Id == userProfile.Id)
+        {
+            MyUserProfileDTO DTO = _mapper.Map<MyUserProfileDTO>(userProfile);
+            return Ok(DTO);
+        }
+        else
+        {
+            userProfile.Lists = userProfile.Lists.Where(l => l.IsPublic).ToList();
+            DefaultUserProfileDTO DTO = _mapper.Map<DefaultUserProfileDTO>(userProfile);
+            return Ok(DTO);
+        }
     }
 }
