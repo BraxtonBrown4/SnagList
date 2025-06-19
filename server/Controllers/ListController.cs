@@ -40,25 +40,6 @@ public class ListController : ControllerBase
         return Ok(publicLists);
     }
 
-    [HttpGet("Public/{id}")]
-    public IActionResult GetPublicById(int id)
-    {
-        List list = _db.Lists
-        .Include(l => l.ListTags).ThenInclude(l => l.Tag)
-        .Include(l => l.UserProfile)
-        .Include(l => l.Items)
-        .FirstOrDefault(l => l.IsPublic && l.Id == id);
-
-        if (list == null)
-        {
-            return NotFound();
-        }
-
-        DefaultListDTO publicListDTO = _mapper.Map<DefaultListDTO>(list);
-
-        return Ok(publicListDTO);
-    }
-
     [HttpGet("Me")]
     [Authorize]
     public IActionResult GetMyLists()
@@ -79,6 +60,32 @@ public class ListController : ControllerBase
         }
         return NotFound();
     }
+
+    [HttpGet("{id}")]
+    [Authorize]
+
+    public IActionResult GetListById(int id)
+    {
+        List list = _db.Lists.Include(l => l.ListTags).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
+
+        if (list == null)
+        {
+            return NotFound();
+        }
+
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        if (profile == null || list.UserProfileId != profile.Id && !list.IsPublic)
+        {
+            return Forbid();
+        }
+
+        DefaultListDTO listDTO = _mapper.Map<DefaultListDTO>(list);
+
+        return Ok(listDTO);
+    }
+
 
     [HttpDelete("{id}")]
     [Authorize]
@@ -103,29 +110,6 @@ public class ListController : ControllerBase
         _db.SaveChanges();
 
         return NoContent();
-    }
-
-    [HttpGet("Me/{id}")]
-    [Authorize]
-    public IActionResult GetMyListById(int id)
-    {
-        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
-
-        List list = _db.Lists
-        .Include(l => l.ListTags).ThenInclude(l => l.Tag)
-        .Include(l => l.UserProfile)
-        .Include(l => l.Items)
-        .FirstOrDefault(l => l.Id == id);
-
-        if (profile != null && list.UserProfileId == profile.Id)
-        {
-
-            DefaultListDTO listDTO = _mapper.Map<DefaultListDTO>(list);
-
-            return Ok(listDTO);
-        }
-        return NotFound();
     }
 
     [HttpPost]
