@@ -40,9 +40,9 @@ public class ListController : ControllerBase
         return Ok(publicLists);
     }
 
-    [HttpGet("Me")]
+    [HttpGet("CurrentUser")]
     [Authorize]
-    public IActionResult GetMyLists()
+    public IActionResult GetCurrentUserLists()
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
