@@ -90,7 +90,7 @@ public class ListController : ControllerBase
     [HttpDelete("{id}")]
     [Authorize]
 
-    public IActionResult Delete(int id)
+    public IActionResult DeleteList(int id)
     {
         var list = _db.Lists.FirstOrDefault(l => l.Id == id);
         if (list == null)
@@ -115,7 +115,7 @@ public class ListController : ControllerBase
     [HttpPost]
     [Authorize]
 
-    public IActionResult Post(ListCreateDTO newListDTO)
+    public IActionResult PostList(ListCreateDTO newListDTO)
     {
         List newList = _mapper.Map<List>(newListDTO);
 
@@ -129,7 +129,7 @@ public class ListController : ControllerBase
     [HttpPut("{id}")]
     [Authorize]
 
-    public IActionResult Put(int id, DefaultListDTO newListDTO)
+    public IActionResult PutList(int id, DefaultListDTO newListDTO)
     {
         List list = _db.Lists.Include(l => l.ListTags).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
 
