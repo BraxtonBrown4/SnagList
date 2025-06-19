@@ -35,7 +35,7 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
               Tags
             </RRNavLink>
 
-            <RRNavLink to="/Profile"
+            <RRNavLink to={`/Profile/${loggedInUser.id}`}
               className="text-2xl font-bold tracking-wide hover:text-gray-300">
               Profile
             </RRNavLink>
