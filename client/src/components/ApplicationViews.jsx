@@ -4,7 +4,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import { MyLists } from "./MyLists";
 import { ListDetails } from "./ListDetails";
-import { NewList } from "./New-List";
+import { NewList } from "./NewList";
 import { EditList } from "./EditList";
 import { Tags } from "./Tags";
 import { AllLists } from "./AllLists";
