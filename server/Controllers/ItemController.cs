@@ -28,7 +28,7 @@ public class ItemController : ControllerBase
     [HttpDelete("{id}")]
     [Authorize]
 
-    public IActionResult DeleteById(int id)
+    public IActionResult DeleteItem(int id)
     {
         Item item = _db.Items.Include(i => i.List).FirstOrDefault(i => i.Id == id);
 
@@ -53,7 +53,7 @@ public class ItemController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public IActionResult CreateItem(DefaultItemDTO ItemDTO)
+    public IActionResult PostItem(DefaultItemDTO ItemDTO)
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
@@ -82,7 +82,7 @@ public class ItemController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize]
-    public IActionResult UpdateItem(int id, DefaultItemDTO itemDTO)
+    public IActionResult PutItem(int id, DefaultItemDTO itemDTO)
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
