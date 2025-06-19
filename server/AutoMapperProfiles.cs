@@ -23,6 +23,6 @@ public class AutoMapperProfiles : Profile
         CreateMap<Item, Item>();
         CreateMap<List, ListCreateDTO>().ReverseMap();
         CreateMap<ListTag, ListTagCreateDTO>().ReverseMap();
-        CreateMap<UserProfile, MyUserProfileDTO>().ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.IdentityUser.Email));
+        CreateMap<UserProfile, MyUserProfileDTO>().ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.IdentityUser.Email)).ReverseMap();
     }
 }

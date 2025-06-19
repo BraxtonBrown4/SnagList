@@ -9,6 +9,7 @@ import { EditList } from "./EditList";
 import { Tags } from "./Tags";
 import { AllLists } from "./AllLists";
 import { Profile } from "./Profile";
+import { EditProfile } from "./EditProfile";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -72,6 +73,15 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
               <Profile loggedInUser={loggedInUser}/>
+            </AuthorizedRoute>
+          }
+        />
+
+        <Route
+          path="/Profile/:profileId/Edit"
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+              <EditProfile loggedInUser={loggedInUser} />
             </AuthorizedRoute>
           }
         />

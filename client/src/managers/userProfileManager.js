@@ -23,3 +23,13 @@ export const demoteUser = (userId) => {
 export const getUserProfileById = (id) => {
   return fetch(`${_apiUrl}/${id}`).then(res => res.json())
 }
+
+export const editUserProfile = (profile) => {
+  return fetch(`${_apiUrl}/${profile.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(profile)
+  });
+}

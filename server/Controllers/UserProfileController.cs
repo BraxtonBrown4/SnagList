@@ -120,4 +120,26 @@ public class UserProfileController : ControllerBase
             return Ok(DTO);
         }
     }
+
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public IActionResult Put(int id, MyUserProfileDTO updateDTO)
+    {
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _dbContext.UserProfiles.Include(u => u.IdentityUser).SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        if (profile == null || profile.Id != id)
+        {
+            return Forbid();
+        }
+
+        _mapper.Map(updateDTO, profile);
+
+        _dbContext.SaveChanges();
+
+        var updatedDTO = _mapper.Map<MyUserProfileDTO>(profile);
+
+        return Ok(updatedDTO);
+    }
 }
