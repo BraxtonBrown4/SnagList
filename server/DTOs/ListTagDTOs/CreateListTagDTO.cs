@@ -4,7 +4,7 @@ using SnagList.Models;
 
 namespace SnagList.DTOs;
 
-public class ListTagCreateDTO
+public class CreateListTagDTO
 {
     public int ListId { get; set; }
     public int TagId { get; set; }
