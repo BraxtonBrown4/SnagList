@@ -27,13 +27,13 @@ public class ListTagController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public IActionResult PostListTag(ListTagCreateDTO newListTagDTO)
+    public IActionResult PostListTag(CreateListTagDTO newListTagDTO)
     {
         ListTag newListTag = _mapper.Map<ListTag>(newListTagDTO);
         _db.ListTags.Add(newListTag);
         _db.SaveChanges();
 
-        DefaultListTagDTO resultDto = _mapper.Map<DefaultListTagDTO>(newListTag);
+        DetailedListTagDTO resultDto = _mapper.Map<DetailedListTagDTO>(newListTag);
 
         return Created($"api/ListTags/{newListTag.Id}", resultDto);
     }
