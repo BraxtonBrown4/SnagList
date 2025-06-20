@@ -29,13 +29,13 @@ public class ListController : ControllerBase
     [HttpGet("Public")]
     public IActionResult GetAllPublic()
     {
-        IQueryable query = _db.Lists
+        IQueryable<List> query = _db.Lists
         .Include(l => l.ListTags).ThenInclude(l => l.Tag)
         .Include(l => l.UserProfile)
         .Include(l => l.Items)
         .Where(l => l.IsPublic);
 
-        List<DefaultListDTO> publicLists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
+        List<DetailedListDTO> publicLists = query.ProjectTo<DetailedListDTO>(_mapper.ConfigurationProvider).ToList();
 
         return Ok(publicLists);
     }
@@ -48,13 +48,13 @@ public class ListController : ControllerBase
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
         if (profile != null)
         {
-            IQueryable query = _db.Lists
+            IQueryable<List> query = _db.Lists
         .Include(l => l.ListTags).ThenInclude(l => l.Tag)
         .Include(l => l.UserProfile)
         .Include(l => l.Items)
         .Where(l => l.UserProfileId == profile.Id);
 
-            List<DefaultListDTO> lists = query.ProjectTo<DefaultListDTO>(_mapper.ConfigurationProvider).ToList();
+            List<DetailedListDTO> lists = query.ProjectTo<DetailedListDTO>(_mapper.ConfigurationProvider).ToList();
 
             return Ok(lists);
         }
@@ -66,7 +66,7 @@ public class ListController : ControllerBase
 
     public IActionResult GetListById(int id)
     {
-        List list = _db.Lists.Include(l => l.ListTags).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
+        List list = _db.Lists.Include(l => l.ListTags).ThenInclude(lt => lt.Tag).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
 
         if (list == null)
         {
@@ -81,7 +81,7 @@ public class ListController : ControllerBase
             return Forbid();
         }
 
-        DefaultListDTO listDTO = _mapper.Map<DefaultListDTO>(list);
+        DetailedListDTO listDTO = _mapper.Map<DetailedListDTO>(list);
 
         return Ok(listDTO);
     }
@@ -115,7 +115,7 @@ public class ListController : ControllerBase
     [HttpPost]
     [Authorize]
 
-    public IActionResult PostList(ListCreateDTO newListDTO)
+    public IActionResult PostList(DefaultListDTO newListDTO)
     {
         List newList = _mapper.Map<List>(newListDTO);
 
@@ -129,7 +129,7 @@ public class ListController : ControllerBase
     [HttpPut("{id}")]
     [Authorize]
 
-    public IActionResult PutList(int id, DefaultListDTO newListDTO)
+    public IActionResult PutList(int id, DetailedListDTO newListDTO)
     {
         List list = _db.Lists.Include(l => l.ListTags).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
 
@@ -168,7 +168,7 @@ public class ListController : ControllerBase
         });
 
         _db.SaveChanges();
-        DefaultListDTO updatedListDTO = _mapper.Map<DefaultListDTO>(list);
+        DetailedListDTO updatedListDTO = _mapper.Map<DetailedListDTO>(list);
         return Ok(updatedListDTO);
     }
 }

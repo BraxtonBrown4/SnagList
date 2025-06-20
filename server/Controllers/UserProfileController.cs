@@ -110,7 +110,7 @@ public class UserProfileController : ControllerBase
 
         if (profile.Id == userProfile.Id)
         {
-            MyUserProfileDTO DTO = _mapper.Map<MyUserProfileDTO>(userProfile);
+            DetailedUserProfileDTO DTO = _mapper.Map<DetailedUserProfileDTO>(userProfile);
             return Ok(DTO);
         }
         else
@@ -124,7 +124,7 @@ public class UserProfileController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize]
-    public IActionResult Put(int id, MyUserProfileDTO updateDTO)
+    public IActionResult Put(int id, DetailedUserProfileDTO updateDTO)
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _dbContext.UserProfiles.Include(u => u.IdentityUser).SingleOrDefault(up => up.IdentityUserId == identityUserId);
@@ -138,7 +138,7 @@ public class UserProfileController : ControllerBase
 
         _dbContext.SaveChanges();
 
-        var updatedDTO = _mapper.Map<MyUserProfileDTO>(profile);
+        var updatedDTO = _mapper.Map<DetailedUserProfileDTO>(profile);
 
         return Ok(updatedDTO);
     }

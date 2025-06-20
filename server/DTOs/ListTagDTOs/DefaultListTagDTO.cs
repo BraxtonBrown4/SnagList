@@ -9,6 +9,4 @@ public class DefaultListTagDTO
     public int Id { get; set; }
     public int ListId { get; set; }
     public int TagId { get; set; }
-    public List? List { get; set; }
-    public Tag? Tag { get; set; }
 }

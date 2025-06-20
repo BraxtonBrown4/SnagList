@@ -16,13 +16,12 @@ public class AutoMapperProfiles : Profile
         */
 
         CreateMap<UserProfile, DefaultUserProfileDTO>().ReverseMap();
-        CreateMap<ListTag, DefaultListTagDTO>().ReverseMap();
+        CreateMap<ListTag, DetailedListTagDTO>().ReverseMap();
         CreateMap<Tag, DefaultTagDTO>().ReverseMap();
         CreateMap<Item, DefaultItemDTO>().ReverseMap();
-        CreateMap<List, DefaultListDTO>().ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.ListTags.Select(lt => lt.Tag))).ReverseMap();
-        CreateMap<Item, Item>();
-        CreateMap<List, ListCreateDTO>().ReverseMap();
-        CreateMap<ListTag, ListTagCreateDTO>().ReverseMap();
-        CreateMap<UserProfile, MyUserProfileDTO>().ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.IdentityUser.Email)).ReverseMap();
+        CreateMap<List, DefaultListDTO>().ReverseMap();
+        CreateMap<List, DetailedListDTO>().ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.ListTags.Select(lt => lt.Tag)));
+        CreateMap<ListTag, CreateListTagDTO>().ReverseMap();
+        CreateMap<UserProfile, DetailedUserProfileDTO>().ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.IdentityUser.Email)).ReverseMap();
     }
 }
