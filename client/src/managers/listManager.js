@@ -22,10 +22,18 @@ export const getCurrentUserLists = async () => {
     return res.json();
 }
 
-export const deleteListById = (listId) => {
-    return fetch(`${_apiUrl}/${listId}`, {
+export const deleteListById = async (listId) => {
+    const res = await fetch(`${_apiUrl}/${listId}`, {
         method: "DELETE"
     })
+
+    if (!res.ok) {
+        const errorBody = await res.json()
+
+        throw new Error(errorBody.message || res.statusText || "Request failed")
+    }
+
+    return true
 }
 
 export const getPublicListById = (listId) => {
