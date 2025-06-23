@@ -1,3 +1,5 @@
+import { useQuery, useMutation } from "@tanstack/react-query"
+
 const _apiUrl = "/api/Lists";
 
 export const getPublicListsByUserId = (userId) => {
@@ -8,8 +10,16 @@ export const getAllPublicLists = () => {
     return fetch(`${_apiUrl}/public`).then(res => res.json())
 }
 
-export const getMyLists = () => {
-    return fetch(`${_apiUrl}/Me`).then(res => res.json())
+export const getCurrentUserLists = async () => {
+    const res = await fetch(`${_apiUrl}/CurrentUser`)
+
+    if (!res.ok) {
+        const errorBody = await res.json()
+
+        throw new Error(errorBody.message || res.statusText || "Request failed")
+    }
+
+    return res.json();
 }
 
 export const deleteListById = (listId) => {
