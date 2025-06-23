@@ -36,12 +36,16 @@ export const deleteListById = async (listId) => {
     return true
 }
 
-export const getPublicListById = (listId) => {
-    return fetch(`${_apiUrl}/Public/${listId}`).then(res => res.json())
-}
+export const getListById = async (listId) => {
+    const res = await fetch(`${_apiUrl}/${listId}`)
 
-export const getMyListById = (listId) => {
-    return fetch(`${_apiUrl}/Me/${listId}`).then(res => res.json())
+    if (!res.ok) {
+        const errorBody = await res.json()
+
+        throw new Error(errorBody.message || res.statusText || "Request failed")
+    }
+
+    return res.json()
 }
 
 export const CreateList = (list) => {

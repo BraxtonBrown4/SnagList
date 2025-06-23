@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteListById, getCurrentUserLists } from "../managers/listManager";
+import { deleteListById, getCurrentUserLists, getListById } from "../managers/listManager";
 
 export const useCurrentUserLists = () => {
     return useQuery({
@@ -16,5 +16,13 @@ export const useDeleteListById = () => {
         onSuccess: () => {
             queryClient.invalidateQueries(["currentUserLists"]);
         }
+    })
+}
+
+export const useGetListById = (listId) => {
+    return useQuery({
+        queryKey: ["list", listId],
+        queryFn: () => getListById(listId),
+        enabled: !!listId,
     })
 }
