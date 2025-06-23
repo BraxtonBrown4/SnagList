@@ -1,8 +1,9 @@
 
 export const DeleteModal = ({ deleteByIdFunc, deleteId, setDeleteId }) => {
 
-    const handleDelete = () => {
-        deleteByIdFunc(deleteId).then(() => {setDeleteId(0)})
+    const handleDelete = async () => {
+        await deleteByIdFunc(deleteId)
+        setDeleteId(0)
     }
     return (deleteId > 0 &&
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
