@@ -43,7 +43,7 @@ export const ListDetails = ({ loggedInUser }) => {
                     <p
                         onClick={() => navigate(`/Profile/${data?.userProfileId}`)}
                         className="text-sm italic text-blue-600 hover:underline cursor-pointer mb-1">
-                        by {data?.userProfile.userName}
+                        by {data?.userProfile?.userName}
                     </p>
 
                     <h3 className="text-gray-700 mb-6 text-lg">
