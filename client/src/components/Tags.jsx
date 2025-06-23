@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { createTag, getAllTags } from "../managers/tagManager"
+import { useCreateTag, useGetAllTags } from "../queryHooks/tagQueryHooks"
+import { LoadingModal } from "../modals/LoadingModal";
+import { ErrorModal } from "../modals/ErrorModal";
 
 export const Tags = () => {
-    const [tags, setTags] = useState([])
     const [newTag, setNewTag] = useState({name: ""})
 
-    useEffect(() => {
-        getAllTags().then(setTags)
-    }, [])
+    const {data: tags, error, isError, isLoading} = useGetAllTags()
 
-    const handleSubmit = (e) => {
+    const {mutateAsync: createTag} = useCreateTag()
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        createTag(newTag).then((res) => {
-                getAllTags().then(setTags)
-                setNewTag({name: ""})
-        })
+        await createTag(newTag)
+        setNewTag({name: ""})
     }
 
     return (
@@ -42,7 +42,7 @@ export const Tags = () => {
             <h1 className="text-3xl font-semibold text-gray-900 mb-6">All Tags</h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {tags.map((t) => (
+                {tags?.map((t) => (
                     <div
                         key={t.id}
                         className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 hover:shadow-md transition">
@@ -50,6 +50,8 @@ export const Tags = () => {
                     </div>
                 ))}
             </div>
+            <LoadingModal isLoading={isLoading}/>
+            {isError && <ErrorModal error={error}/>}
         </div>
 
     )
