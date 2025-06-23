@@ -2,10 +2,6 @@ import { useQuery, useMutation } from "@tanstack/react-query"
 
 const _apiUrl = "/api/Lists";
 
-export const getPublicListsByUserId = (userId) => {
-    return fetch(`${_apiUrl}/${userId}`).then(res => res.json())
-}
-
 export const getAllPublicLists = () => {
     return fetch(`${_apiUrl}/public`).then(res => res.json())
 }
