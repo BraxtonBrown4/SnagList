@@ -11,7 +11,7 @@ export const MyLists = () => {
     const navigate = useNavigate()
 
     const {data, error, isError, isLoading} = useCurrentUserLists()
-    const mutation = useDeleteListById()
+    const {mutateAsync} = useDeleteListById()
 
     return (
         <div>
@@ -60,7 +60,7 @@ export const MyLists = () => {
             )}
             <LoadingModal isLoading={isLoading}/>
             {isError && <ErrorModal error={error}/>}
-            <DeleteModal deleteByIdFunc={mutation.mutateAsync} deleteId={deleteId} setDeleteId={setDeleteId} />
+            <DeleteModal deleteByIdFunc={mutateAsync} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div>
     );
 }

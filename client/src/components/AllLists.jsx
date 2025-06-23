@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react"
-import { deleteListById, getAllPublicLists } from "../managers/listManager"
+import { useState } from "react"
 import { DeleteModal } from "../modals/DeleteModal"
 import { useNavigate } from "react-router-dom";
+import { useDeleteListById, useGetAllPublicLists } from "../queryHooks/listQueryHooks";
+import { ErrorModal } from "../modals/ErrorModal";
+import { LoadingModal } from "../modals/LoadingModal";
 
 
 export const AllLists = ({ loggedInUser }) => {
-    const [lists, setLists] = useState(null)
     const [deleteId, setDeleteId] = useState(0)
 
     const navigate = useNavigate()
 
-
-    useEffect(() => {
-        if (deleteId == 0) {
-            getAllPublicLists().then(setLists)
-        }
-    }, [loggedInUser, deleteId])
+    const { data: lists, error, isError, isLoading } = useGetAllPublicLists()
+    const { mutateAsync } = useDeleteListById()
 
 
     return (
-        lists != null &&
         <div>
-            {lists.map((l) => (
+            {lists?.map((l) => (
                 <div
                     key={l.id}
                     className="max-w-sm mx-auto my-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
@@ -61,7 +57,9 @@ export const AllLists = ({ loggedInUser }) => {
                     </div>}
                 </div>
             ))}
-            <DeleteModal deleteByIdFunc={deleteListById} deleteId={deleteId} setDeleteId={setDeleteId} />
+            <LoadingModal isLoading={isLoading} />
+            {isError && <ErrorModal error={error} />}
+            <DeleteModal deleteByIdFunc={mutateAsync} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div>
     );
 
