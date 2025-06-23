@@ -1,33 +1,27 @@
-import { useEffect, useState } from "react"
-import { deleteListById, getMyLists } from "../managers/listManager"
+import { useState } from "react"
 import { DeleteModal } from "../modals/DeleteModal"
 import { useNavigate } from "react-router-dom";
+import { useCurrentUserListsQuery, useDeleteListById } from "../queryHooks/listQueryHooks";
+import { LoadingModal } from "../modals/LoadingModal";
+import { ErrorModal } from "../modals/ErrorModal";
 
-
-export const MyLists = ({ loggedInUser }) => {
-    const [lists, setLists] = useState(null)
+export const MyLists = () => {
     const [deleteId, setDeleteId] = useState(0)
 
     const navigate = useNavigate()
 
-
-    useEffect(() => {
-        if (deleteId == 0) {
-            getMyLists().then(setLists)
-        }
-    }, [loggedInUser, deleteId])
-
+    const {data, error, isError, isLoading} = useCurrentUserListsQuery()
+    const mutation = useDeleteListById()
 
     return (
-        lists != null &&
         <div>
-            {lists.length === 0 ? (
+            {data?.length == 0 ? (
                 <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-medium text-gray-700 px-4">Oops! Looks like you have no lists, try making some</h2>) : (
-                lists.map((l) => (
+                data?.map((l) => (
                     <div
                         key={l.id}
                         className="max-w-sm mx-auto my-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
-                        <div onClick={() => { navigate(`/Lists/${l.id}/${l.isPublic}`) }}>
+                        <div onClick={() => { navigate(`/Lists/${l.id}`) }}>
 
                             <div className="p-6">
                                 <h2 className="text-xl font-medium text-gray-900 mb-2">{l.name}</h2>
@@ -64,9 +58,9 @@ export const MyLists = ({ loggedInUser }) => {
                     </div>
                 ))
             )}
-
-            <DeleteModal deleteByIdFunc={deleteListById} deleteId={deleteId} setDeleteId={setDeleteId} />
+            <LoadingModal isLoading={isLoading}/>
+            {isError && <ErrorModal error={error}/>}
+            <DeleteModal deleteByIdFunc={mutation.mutateAsync} deleteId={deleteId} setDeleteId={setDeleteId} />
         </div>
     );
-
 }
