@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteListById, getCurrentUserLists, getListById } from "../managers/listManager";
+import { CreateList, deleteListById, getCurrentUserLists, getListById } from "../managers/listManager";
 
 export const useCurrentUserLists = () => {
     return useQuery({
@@ -25,4 +25,10 @@ export const useGetListById = (listId) => {
         queryFn: () => getListById(listId),
         enabled: !!listId,
     })
+}
+
+export const useCreateList = () => {
+    return useMutation({
+        mutationFn: CreateList,
+    });
 }
