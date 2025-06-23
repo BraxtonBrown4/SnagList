@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react"
-import { getAllTags } from "../managers/tagManager"
+import { useState } from "react"
+import { useGetAllTags } from "../queryHooks/tagQueryHooks"
 
 export const TagModal = ({ isModalOpen, setIsModalOpen, tagArr, setTagArr }) => {
-    const [allTags, setAllTags] = useState([])
     const [localTagArr, setLocalTagArr] = useState([...tagArr])
 
-    useEffect(() => {
-        getAllTags().then(setAllTags)
-    }, [])
+    const { data: allTags } = useGetAllTags()
 
     const handleChange = (e, tag) => {
-        if (e.target.checked){
+        if (e.target.checked) {
             const mutable = localTagArr.filter(t => t.id !== tag.id)
             setLocalTagArr([...mutable, tag])
         } else {
@@ -31,18 +28,18 @@ export const TagModal = ({ isModalOpen, setIsModalOpen, tagArr, setTagArr }) => 
                             className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             defaultValue={tagArr?.some(tag => tag.id == t.id)}
                             defaultChecked={tagArr?.some(tag => tag.id == t.id)}
-                            onChange={(e) => {handleChange(e, t)}} />
+                            onChange={(e) => { handleChange(e, t) }} />
                     </div>
                     )}
                 </div>
                 <div className="flex justify-end space-x-3 pt-3">
                     <button
-                        onClick={() => {setIsModalOpen(false); setLocalTagArr([...tagArr])}}
+                        onClick={() => { setIsModalOpen(false); setLocalTagArr([...tagArr]) }}
                         className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition">
                         Cancel
                     </button>
                     <button
-                        onClick={() => {setIsModalOpen(false); setTagArr(localTagArr)}}
+                        onClick={() => { setIsModalOpen(false); setTagArr(localTagArr) }}
                         className="px-4 py-2 text-sm font-medium text-green-600 hover:bg-green-50 rounded-lg transition">
                         Submit
                     </button>

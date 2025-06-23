@@ -5,6 +5,7 @@ import { CreateList } from "../managers/listManager"
 import { createItem } from "../managers/itemManager"
 import { useNavigate } from "react-router-dom";
 import { CreateListTag } from "../managers/listTagManager"
+import { useCreateList } from "../queryHooks/listQueryHooks"
 
 export const NewList = ({ loggedInUser }) => {
     const [newList, setNewList] = useState({ userProfileId: loggedInUser.id, isPublic: false })
@@ -14,23 +15,19 @@ export const NewList = ({ loggedInUser }) => {
     const [newItemArr, setNewItemArr] = useState([])
     const navigate = useNavigate()
 
+    const {mutateAsync} = useCreateList() 
+
 
     const handleChange = (e) => {
         const { name, type, checked, value } = e.target
         setNewList({ ...newList, [name]: type === "checkbox" ? checked : value })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        CreateList(newList).then((newListRes) => {
-            const itemPromises = newItemArr.map(i => createItem({ ...i, listId: newListRes.id }))
-
-            const tagPromises = tagArr.map(t => CreateListTag({ tagId: t.id, listId: newListRes.id }))
-
-            Promise.all([...itemPromises, ...tagPromises]).then(() => {
-                navigate(`/Lists/${newListRes.id}/${newListRes.isPublic}`);
-            });
-        });
+        const res = await mutateAsync({...newList, items: newItemArr, tags: tagArr})
+            
+        navigate(`/Lists/${res.id}`);
     }
 
     return (
@@ -101,7 +98,7 @@ export const NewList = ({ loggedInUser }) => {
                     <h3 className="text-sm font-semibold text-gray-700 mb-1">Items</h3>
                     <div className="space-y-1">
                         {newItemArr?.map(i => (
-                            <div key={i.id} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-md px-3 py-2 mb-2">
+                            <div key={i.name} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-md px-3 py-2 mb-2">
                                 <p className="text-sm font-medium text-gray-700">{`${i.name} $${i.price}`}</p>
                                 <button
                                     onClick={() => setNewItemArr(newItemArr.filter(item => item.name !== i.name))}
