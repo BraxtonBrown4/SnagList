@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteListById, getCurrentUserLists } from "../managers/listManager";
 
-export const useCurrentUserListsQuery = () => {
+export const useCurrentUserLists = () => {
     return useQuery({
         queryKey: ["currentUserLists"],
         queryFn: () => getCurrentUserLists(),

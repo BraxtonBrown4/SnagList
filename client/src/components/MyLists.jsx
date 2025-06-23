@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { DeleteModal } from "../modals/DeleteModal"
 import { useNavigate } from "react-router-dom";
-import { useCurrentUserListsQuery, useDeleteListById } from "../queryHooks/listQueryHooks";
+import { useCurrentUserLists, useDeleteListById } from "../queryHooks/listQueryHooks";
 import { LoadingModal } from "../modals/LoadingModal";
 import { ErrorModal } from "../modals/ErrorModal";
 
@@ -10,7 +10,7 @@ export const MyLists = () => {
 
     const navigate = useNavigate()
 
-    const {data, error, isError, isLoading} = useCurrentUserListsQuery()
+    const {data, error, isError, isLoading} = useCurrentUserLists()
     const mutation = useDeleteListById()
 
     return (
