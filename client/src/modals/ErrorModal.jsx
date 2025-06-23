@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-
 export const ErrorModal = ({ error }) => {
-
   return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
         <div className="bg-white p-6 rounded-2xl shadow-lg w-80 flex flex-col items-center text-center">
