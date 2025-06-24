@@ -1,22 +1,20 @@
-import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getUserProfileById } from "../managers/userProfileManager"
+import { useGetUserProfileById } from "../queryHooks/userProfileQueryHooks"
+import { LoadingModal } from "../modals/LoadingModal";
+import { ErrorModal } from "../modals/ErrorModal";
 
 export const Profile = ({ loggedInUser }) => {
     const { profileId } = useParams()
-    const [profile, setProfile] = useState({})
     const navigate = useNavigate()
 
-    useEffect(() => {
-        getUserProfileById(profileId).then(setProfile)
-    }, [profileId, loggedInUser])
+    const {data: profile, error, isError, isLoading} = useGetUserProfileById(profileId)
 
-    return (profile.id &&
+    return (
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
             <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-4 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6">
                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-gray-200 shadow-sm">
                     <img
-                        src={profile.profilePic}
+                        src={profile?.profilePic}
                         alt="Profile Picture"
                         className="w-full h-full object-cover"
                     />
@@ -24,25 +22,25 @@ export const Profile = ({ loggedInUser }) => {
 
                 <div className="flex-1 w-full">
                     <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 break-words">
-                        {profile.userName}
+                        {profile?.userName}
                     </h1>
                     <h2 className="text-sm text-gray-600 mb-4 break-words">
-                        {profile.userName} has {profile.lists.length} list{profile.lists.length !== 1 && "s"}
+                        {profile?.userName} has {profile?.lists?.length} list{profile?.lists?.length !== 1 && "s"}
                     </h2>
 
-                    {loggedInUser.id === profile.id && (
+                    {loggedInUser.id === profile?.id && (
                         <div className="space-y-1 mb-6">
                             <p className="text-sm text-gray-700 break-words">
-                                📧 <span className="font-medium">Email:</span> {profile.email}
+                                📧 <span className="font-medium">Email:</span> {profile?.email}
                             </p>
                             <p className="text-sm text-gray-700 break-words">
-                                🏠 <span className="font-medium">Address:</span> {profile.address}
+                                🏠 <span className="font-medium">Address:</span> {profile?.address}
                             </p>
                             <p className="text-sm text-gray-700 break-words">
-                                👤 <span className="font-medium">First Name:</span> {profile.firstName}
+                                👤 <span className="font-medium">First Name:</span> {profile?.firstName}
                             </p>
                             <p className="text-sm text-gray-700 break-words">
-                                👤 <span className="font-medium">Last Name:</span> {profile.lastName}
+                                👤 <span className="font-medium">Last Name:</span> {profile?.lastName}
                             </p>
 
                             <div className="pt-3">
@@ -56,14 +54,14 @@ export const Profile = ({ loggedInUser }) => {
                         </div>
                     )}
 
-                    {profile.lists.length > 0 && (
+                    {profile?.lists?.length > 0 && (
                         <div>
                             <h3 className="text-sm font-semibold text-gray-800 mb-1">Lists</h3>
                             <div className="space-y-1">
-                                {profile.lists.map((l) => (
+                                {profile?.lists.map((l) => (
                                     <p
                                         key={l.id}
-                                        onClick={() => navigate(`/Lists/${l.id}/${l.isPublic}`)}
+                                        onClick={() => navigate(`/Lists/${l.id}`)}
                                         className="text-sm text-blue-600 cursor-pointer hover:underline break-words"
                                     >
                                         {l.name}
@@ -74,6 +72,9 @@ export const Profile = ({ loggedInUser }) => {
                     )}
                 </div>
             </div>
+            
+            <LoadingModal isLoading={isLoading}/>
+            {isError && <ErrorModal error={error}/>}
         </div>
     )
 }
