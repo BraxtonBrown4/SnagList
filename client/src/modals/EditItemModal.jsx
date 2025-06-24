@@ -1,9 +1,12 @@
 import { updateItem } from "../managers/itemManager"
+import { useUpdateItem } from "../queryHooks/itemQueryHooks"
 
 export const EditItemModal = ({ editItem, setEditItem }) => {
 
+    const {mutateAsync} = useUpdateItem(editItem?.listId)
+
     const handleEdit = () => {
-       updateItem(editItem).then(() => {setEditItem(null)})
+       mutateAsync(editItem).then(() => {setEditItem(null)})
     }
 
     return (editItem &&

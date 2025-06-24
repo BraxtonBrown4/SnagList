@@ -1,39 +1,44 @@
-import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { editUserProfile, getUserProfileById } from "../managers/userProfileManager"
+import { useEditUserProfile, useGetUserProfileById } from "../queryHooks/userProfileQueryHooks";
+import { useQueryClient } from "@tanstack/react-query";
+import { LoadingModal } from "../modals/LoadingModal";
+import { ErrorModal } from "../modals/ErrorModal";
 
 export const EditProfile = ({ loggedInUser }) => {
+    const queryClient = useQueryClient()
     const { profileId } = useParams()
-    const [editProfile, setEditProfile] = useState({});
     const navigate = useNavigate()
 
-    useEffect(() => {
-        getUserProfileById(profileId).then(setEditProfile)
-    }, [profileId, loggedInUser])
+    const { data: profile, error, isError, isLoading } = useGetUserProfileById(profileId)
+    const { mutateAsync: editProfile } = useEditUserProfile(profileId)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setEditProfile({ ...editProfile, [name]: value });
+
+        queryClient.setQueryData(["profile", profileId], oldData => ({
+            ...oldData,
+            [name]: value
+        }))
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        editUserProfile(editProfile).then(() => {
-            navigate(`/Profile/${loggedInUser.id}`)
-        })
+        editProfile(profile)
+
+        navigate(`/Profile/${loggedInUser.id}`)
     };
 
     return (
-        editProfile.id == loggedInUser.id ? (
+        profile?.id == loggedInUser.id ? (
             <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
                 <form
                     onSubmit={handleSubmit}
                     className="bg-white rounded-2xl shadow-md border border-gray-100 p-4 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6"
                 >
-                    {/* Profile Image */}
                     <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-gray-200 shadow-sm">
                         <img
-                            src={editProfile.profilePic}
+                            src={profile.profilePic}
                             alt="Profile Picture"
                             className="w-full h-full object-cover"
                         />
@@ -53,7 +58,7 @@ export const EditProfile = ({ loggedInUser }) => {
                                 <input
                                     type={type}
                                     name={name}
-                                    value={editProfile[name] || ""}
+                                    value={profile[name] || ""}
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -77,6 +82,8 @@ export const EditProfile = ({ loggedInUser }) => {
                         </div>
                     </div>
                 </form>
+                <LoadingModal isLoading={isLoading} />
+                {isError && <ErrorModal error={error} />}
             </div>
         ) : navigate(`/Profile/${loggedInUser.id}`)
     );

@@ -20,16 +20,26 @@ export const demoteUser = (userId) => {
   });
 };
 
-export const getUserProfileById = (id) => {
-  return fetch(`${_apiUrl}/${id}`).then(res => res.json())
-}
+export const getUserProfileById = async (id) => {
+  const res = await fetch(`${_apiUrl}/${id}`);
+  if (!res.ok) {
+    const errorBody = await res.json();
+    throw new Error(errorBody.message || res.statusText || "Request failed");
+  }
+  return res.json();
+};
 
-export const editUserProfile = (profile) => {
-  return fetch(`${_apiUrl}/${profile.id}`, {
+export const editUserProfile = async (profile) => {
+  const res = await fetch(`${_apiUrl}/${profile.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(profile)
   });
-}
+  if (!res.ok) {
+    const errorBody = await res.json();
+    throw new Error(errorBody.message || res.statusText || "Request failed");
+  }
+  return res.json();
+};

@@ -115,17 +115,52 @@ public class ListController : ControllerBase
     [HttpPost]
     [Authorize]
 
-    public IActionResult PostList(DefaultListDTO newListDTO)
+    public IActionResult PostList(DetailedListDTO newListDTO)
     {
-        List newList = _mapper.Map<List>(newListDTO);
+    var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var profile = _db.UserProfiles.FirstOrDefault(up => up.IdentityUserId == identityUserId);
 
-        _db.Lists.Add(newList);
-        _db.SaveChanges();
-
-        DefaultListDTO createdListDTO = _mapper.Map<DefaultListDTO>(newList);
-        return Created($"api/Lists/{newList.Id}", createdListDTO);
+    if (profile == null)
+    {
+        return Unauthorized();
     }
 
+    var newList = new List
+    {
+        Name = newListDTO.Name,
+        IsPublic = newListDTO.IsPublic,
+        UserProfileId = profile.Id
+    };
+
+    _db.Lists.Add(newList);
+    _db.SaveChanges();
+
+    newListDTO.Tags.ForEach(t =>
+    {
+        _db.ListTags.Add(new ListTag
+        {
+            ListId = newList.Id,
+            TagId = t.Id
+        });
+    });
+
+    newListDTO.Items.ForEach(i =>
+    {
+        _db.Items.Add(new Item
+        {
+            ListId = newList.Id,
+            Name = i.Name,
+            Price = i.Price,
+            TargetPrice = i.TargetPrice,
+            Image = i.Image
+        });
+    });
+
+    _db.SaveChanges();
+
+    DetailedListDTO createdDTO = _mapper.Map<DetailedListDTO>(newList);
+    return Created($"api/Lists/{newList.Id}", createdDTO);
+}
     [HttpPut("{id}")]
     [Authorize]
 
