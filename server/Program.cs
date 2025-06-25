@@ -56,6 +56,10 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddNpgsql<SnagListDbContext>(builder.Configuration["SnagListDbConnectionString"]);
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+builder.Services.AddScoped<EbayServices>();
+builder.Services.AddMemoryCache();
+
+
 
 var app = builder.Build();
 
