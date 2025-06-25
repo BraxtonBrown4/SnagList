@@ -96,7 +96,8 @@ export const AddItemModal = ({ isModalOpen, setIsModalOpen, newItemArr, setNewIt
 
                         <div className="flex justify-end space-x-3 pt-3">
                             <button
-                                onClick={() => {setIsModalOpen(false), setItem({})}}
+                                type="reset"
+                                onClick={() => { setIsModalOpen(false), setItem({}) }}
                                 className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition"
                             >
                                 Cancel
