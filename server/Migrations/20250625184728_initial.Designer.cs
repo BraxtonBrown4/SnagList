@@ -12,7 +12,7 @@ using SnagList.Data;
 namespace SnagList.Migrations
 {
     [DbContext(typeof(SnagListDbContext))]
-    [Migration("20250625181238_initial")]
+    [Migration("20250625184728_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -152,13 +152,13 @@ namespace SnagList.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "85840161-d33a-44b5-9713-0210f644eb7a",
+                            ConcurrencyStamp = "4294f72b-2268-41e3-bb72-48a0cdc28a3a",
                             Email = "braxtoncarterbrown@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEOi593vim5rj2KOXa5kUdW8CzG2Jyk30Fmgh+OmtNGepXCRRATaMj53MTfq6prJm8A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKug/Mk+iYKZNbcW5MFm+4DKPcsLWyR6ysCt0/o2iNEA0abO03WssnRdvZVXRaWD7w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5ba5c624-f5af-4c35-940c-4916619f3362",
+                            SecurityStamp = "3b2e189a-5cdc-4871-8b77-c0459da17ba7",
                             TwoFactorEnabled = false,
                             UserName = "Robopolo"
                         });

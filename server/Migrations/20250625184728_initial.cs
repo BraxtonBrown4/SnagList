@@ -293,7 +293,7 @@ namespace SnagList.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "85840161-d33a-44b5-9713-0210f644eb7a", "braxtoncarterbrown@gmail.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEOi593vim5rj2KOXa5kUdW8CzG2Jyk30Fmgh+OmtNGepXCRRATaMj53MTfq6prJm8A==", null, false, "5ba5c624-f5af-4c35-940c-4916619f3362", false, "Robopolo" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "4294f72b-2268-41e3-bb72-48a0cdc28a3a", "braxtoncarterbrown@gmail.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEKug/Mk+iYKZNbcW5MFm+4DKPcsLWyR6ysCt0/o2iNEA0abO03WssnRdvZVXRaWD7w==", null, false, "3b2e189a-5cdc-4871-8b77-c0459da17ba7", false, "Robopolo" });
 
             migrationBuilder.InsertData(
                 table: "Tags",
