@@ -1,9 +1,5 @@
 const _apiUrl = "/api/Notifications/CurrentUser";
 
-export const refreshNotifications = () => {
-  return fetch(`${_apiUrl}/Refresh`).then((res) => res.json());
-};
-
 export const getAllNotifications = () => {
   return fetch(_apiUrl).then((res) => res.json());
 };

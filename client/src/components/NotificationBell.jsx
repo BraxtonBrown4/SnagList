@@ -4,14 +4,14 @@ import {
   useDeleteAllNotifications,
   useDeleteNotification,
   useNotifications,
-  useRefreshNotifications,
 } from "../queryHooks/notificationQueryHooks";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const NotificationBell = () => {
   const [notifModal, setNotifModal] = useState(false);
+  const queryClient = useQueryClient()
 
-  const { data: notifData = [] } = useNotifications();
-  const { mutateAsync: refresh, isPending: refreshing } = useRefreshNotifications();
+  const { data: notifData = [], isLoading: refreshing } = useNotifications();
   const { mutateAsync: deleteAll, isPending: deletingAll } = useDeleteAllNotifications();
   const { mutateAsync: deleteOne, isPending: deletingOne } = useDeleteNotification();
 
@@ -32,7 +32,7 @@ export const NotificationBell = () => {
             <h3 className="text-sm font-semibold text-gray-800">Notifications</h3>
             <div className="flex gap-2">
               <button
-                onClick={() => refresh()}
+                onClick={() => {queryClient.invalidateQueries({ queryKey: ['notifications'] });}}
                 disabled={refreshing || deletingAll || deletingOne}
                 className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded ${
                   refreshing ? "text-gray-400 cursor-not-allowed" : "text-blue-600 hover:bg-blue-50"

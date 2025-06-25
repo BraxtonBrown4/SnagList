@@ -1,15 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {refreshNotifications, getAllNotifications, deleteNotification, deleteAllNotifications} from "../managers/notificationManager";
-
-export const useRefreshNotifications = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: refreshNotifications,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["notifications"]);
-    },
-  });
-};
+import { getAllNotifications, deleteNotification, deleteAllNotifications} from "../managers/notificationManager";
 
 export const useNotifications = () => {
   return useQuery({
