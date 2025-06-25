@@ -12,7 +12,7 @@ using SnagList.Data;
 namespace SnagList.Migrations
 {
     [DbContext(typeof(SnagListDbContext))]
-    [Migration("20250609134605_initial")]
+    [Migration("20250625181238_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -152,13 +152,13 @@ namespace SnagList.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3ae4b3b8-c40c-4e2a-aa6a-680d4e090117",
+                            ConcurrencyStamp = "85840161-d33a-44b5-9713-0210f644eb7a",
                             Email = "braxtoncarterbrown@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEDNlndJ0wTEMZUEqaf0jL69fId+jkrAp4vmeRMRjv5YNvC4R9z85bqbVgomxgnTKcA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOi593vim5rj2KOXa5kUdW8CzG2Jyk30Fmgh+OmtNGepXCRRATaMj53MTfq6prJm8A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e5c7dea7-54ae-4754-877b-ac2f44047fa2",
+                            SecurityStamp = "5ba5c624-f5af-4c35-940c-4916619f3362",
                             TwoFactorEnabled = false,
                             UserName = "Robopolo"
                         });
@@ -270,6 +270,9 @@ namespace SnagList.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("Notify")
+                        .HasColumnType("boolean");
+
                     b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
 
@@ -288,13 +291,16 @@ namespace SnagList.Migrations
                             Id = 1,
                             ListId = 1,
                             Name = "AirPods",
-                            Price = 170m
+                            Notify = true,
+                            Price = 170m,
+                            TargetPrice = 70m
                         },
                         new
                         {
                             Id = 2,
                             ListId = 2,
                             Name = "socks",
+                            Notify = false,
                             Price = 6m
                         });
                 });
@@ -387,6 +393,45 @@ namespace SnagList.Migrations
                             ListId = 2,
                             TagId = 1
                         });
+                });
+
+            modelBuilder.Entity("SnagList.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ItemWebUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserProfileId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("SnagList.Models.Tag", b =>
@@ -525,7 +570,7 @@ namespace SnagList.Migrations
             modelBuilder.Entity("SnagList.Models.Item", b =>
                 {
                     b.HasOne("SnagList.Models.List", "List")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -536,7 +581,7 @@ namespace SnagList.Migrations
             modelBuilder.Entity("SnagList.Models.List", b =>
                 {
                     b.HasOne("SnagList.Models.UserProfile", "UserProfile")
-                        .WithMany()
+                        .WithMany("Lists")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -547,7 +592,7 @@ namespace SnagList.Migrations
             modelBuilder.Entity("SnagList.Models.ListTag", b =>
                 {
                     b.HasOne("SnagList.Models.List", "List")
-                        .WithMany()
+                        .WithMany("ListTags")
                         .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -570,6 +615,18 @@ namespace SnagList.Migrations
                         .HasForeignKey("IdentityUserId");
 
                     b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("SnagList.Models.List", b =>
+                {
+                    b.Navigation("Items");
+
+                    b.Navigation("ListTags");
+                });
+
+            modelBuilder.Entity("SnagList.Models.UserProfile", b =>
+                {
+                    b.Navigation("Lists");
                 });
 #pragma warning restore 612, 618
         }
