@@ -25,9 +25,9 @@ public class NotificationController : ControllerBase
         _EbayServices = EbayServices;
     }
 
-    [HttpGet("Refresh")]
+    [HttpGet("ManualSync")]
     [Authorize]
-    public async Task<IActionResult> RefreshNotifications()
+    public async Task<IActionResult> ManualSyncNotifications()
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
