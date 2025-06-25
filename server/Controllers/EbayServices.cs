@@ -60,11 +60,11 @@ public class EbayServices
         }
     }
 
-    public async Task<Result<EbaySearchResponse>> FetchItemsByName(string name, decimal price, string accessToken)
+    public async Task<Result<EbaySearchResponse>> FetchItemsByName(string name, decimal targetPrice, string accessToken)
     {
         using HttpClient client = new HttpClient();
 
-        decimal bufferPrice = price * 1.10M;
+        decimal bufferPrice = targetPrice * 1.10M;
 
         string url = $"https://api.ebay.com/buy/browse/v1/item_summary/search?q={Uri.EscapeDataString(name)}&filter=price:[0..{bufferPrice}]&limit=5";
 
