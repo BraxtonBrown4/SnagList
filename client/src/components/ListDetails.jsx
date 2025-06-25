@@ -33,7 +33,7 @@ export const ListDetails = ({ loggedInUser }) => {
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-50 p-6 overflow-auto">
-            <div className="w-full h-[75vh] overflow-y-auto max-w-lg bg-white rounded-2xl shadow-lg border border-gray-200">
+            <div className="w-full max-h-[75vh] overflow-y-auto max-w-lg bg-white rounded-2xl shadow-lg border border-gray-200">
 
                 <div className="p-8 text-center">
                     <h2 className="text-3xl font-medium text-gray-900 mb-4">{data?.name}</h2>
