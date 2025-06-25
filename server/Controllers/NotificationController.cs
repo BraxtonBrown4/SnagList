@@ -11,7 +11,7 @@ using SnagList.Models;
 namespace SnagList.Controllers;
 
 [ApiController]
-[Route("api/Notifications")]
+[Route("api/Notifications/CurrentUser")]
 public class NotificationController : ControllerBase
 {
     private readonly SnagListDbContext _db;
@@ -25,9 +25,9 @@ public class NotificationController : ControllerBase
         _EbayServices = EbayServices;
     }
 
-    [HttpGet("CheckItems/CurrentUser")]
+    [HttpGet("Refresh")]
     [Authorize]
-    public async Task<IActionResult> CheckEbayItems()
+    public async Task<IActionResult> RefreshNotifications()
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
@@ -77,8 +77,80 @@ public class NotificationController : ControllerBase
         _db.SaveChanges();
 
         List<DefaultNotificationDTO> ebayNotifDTOs = _mapper.Map<List<DefaultNotificationDTO>>(ebayNotifications);
-        
+
         return Ok(ebayNotifDTOs);
+    }
+
+    [HttpGet]
+    [Authorize]
+
+    public IActionResult GetAllNotifications()
+    {
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        if (profile == null)
+        {
+            return Unauthorized();
+        }
+
+        List<Notification> notifications = _db.Notifications
+            .Where(n => n.UserProfileId == profile.Id)
+            .OrderByDescending(n => n.NotificationDate)
+            .ToList();
+
+        List<DefaultNotificationDTO> notificationDTOs = _mapper.Map<List<DefaultNotificationDTO>>(notifications);
+
+        return Ok(notificationDTOs);
+    }
+
+    [HttpDelete]
+    [Authorize]
+
+    public IActionResult DeleteAllNotifications()
+    {
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        if (profile == null)
+        {
+            return Unauthorized();
+        }
+
+        List<Notification> notifications = _db.Notifications
+            .Where(n => n.UserProfileId == profile.Id)
+            .ToList();
+
+        _db.Notifications.RemoveRange(notifications);
+        _db.SaveChanges();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+
+    public IActionResult DeleteOneNotification(int id)
+    {
+        var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var profile = _db.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+
+        if (profile == null)
+        {
+            return Unauthorized();
+        }
+
+        Notification notification = _db.Notifications.FirstOrDefault(n => n.Id == id && n.UserProfileId == profile.Id);
+
+        if (notification == null)
+        {
+            return NotFound();
+        }
+
+        _db.Notifications.Remove(notification);
+        _db.SaveChanges();
+
+        return NoContent();
     }
 }
 

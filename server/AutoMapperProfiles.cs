@@ -26,7 +26,8 @@ public class AutoMapperProfiles : Profile
         CreateMap<EbayItem, Notification>()
         .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image.ImageUrl))
         .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price.Value))
-        .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Price.CurrencyCode));
+        .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Price.CurrencyCode))
+        .ForMember(dest => dest.NotificationDate, opt => opt.MapFrom(_ => DateTime.Now));
         CreateMap<Notification, DefaultNotificationDTO>();
     }
 }
