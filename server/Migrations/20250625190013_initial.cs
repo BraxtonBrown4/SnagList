@@ -60,6 +60,7 @@ namespace SnagList.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserProfileId = table.Column<int>(type: "integer", nullable: false),
+                    NotificationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Image = table.Column<string>(type: "text", nullable: true),
                     Price = table.Column<string>(type: "text", nullable: false),
@@ -293,7 +294,7 @@ namespace SnagList.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "4294f72b-2268-41e3-bb72-48a0cdc28a3a", "braxtoncarterbrown@gmail.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEKug/Mk+iYKZNbcW5MFm+4DKPcsLWyR6ysCt0/o2iNEA0abO03WssnRdvZVXRaWD7w==", null, false, "3b2e189a-5cdc-4871-8b77-c0459da17ba7", false, "Robopolo" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "25e3d079-5fe7-4481-a9ce-b81f2606d7c5", "braxtoncarterbrown@gmail.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEI4NjJhv/OTMrDd+/NvHfWytiW1HrZ4CTu1T1A+CVN61EcywLWesJ98segz9YzS5dA==", null, false, "03d2d17f-a2b4-49c0-b330-13041591d024", false, "Robopolo" });
 
             migrationBuilder.InsertData(
                 table: "Tags",

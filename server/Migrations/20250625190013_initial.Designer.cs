@@ -12,7 +12,7 @@ using SnagList.Data;
 namespace SnagList.Migrations
 {
     [DbContext(typeof(SnagListDbContext))]
-    [Migration("20250625184728_initial")]
+    [Migration("20250625190013_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -152,13 +152,13 @@ namespace SnagList.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4294f72b-2268-41e3-bb72-48a0cdc28a3a",
+                            ConcurrencyStamp = "25e3d079-5fe7-4481-a9ce-b81f2606d7c5",
                             Email = "braxtoncarterbrown@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEKug/Mk+iYKZNbcW5MFm+4DKPcsLWyR6ysCt0/o2iNEA0abO03WssnRdvZVXRaWD7w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI4NjJhv/OTMrDd+/NvHfWytiW1HrZ4CTu1T1A+CVN61EcywLWesJ98segz9YzS5dA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3b2e189a-5cdc-4871-8b77-c0459da17ba7",
+                            SecurityStamp = "03d2d17f-a2b4-49c0-b330-13041591d024",
                             TwoFactorEnabled = false,
                             UserName = "Robopolo"
                         });
@@ -417,6 +417,9 @@ namespace SnagList.Migrations
                     b.Property<string>("ItemWebUrl")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("NotificationDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Price")
                         .IsRequired()
