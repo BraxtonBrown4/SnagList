@@ -11,7 +11,7 @@ using SnagList.Models;
 namespace SnagList.Controllers;
 
 [ApiController]
-[Route("api/Ebay")]
+[Route("api/Notifications")]
 public class NotificationController : ControllerBase
 {
     private readonly SnagListDbContext _db;
