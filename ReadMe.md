@@ -1,6 +1,6 @@
 # SnagList
 
-**SnagList** is a list manager app that lets you keep track of items you want to buy. You can also browse other people’s lists if they’ve set them to public. The app uses modern technologies including JavaScript, React, Tailwind CSS, AutoMapper, and C# for a full-stack experience.
+**SnagList** is a list manager app that lets you keep track of items you want to buy. You can also browse other people's lists if they've set them to public. The app uses modern technologies including JavaScript, React, Tailwind CSS, AutoMapper, and C# for a full-stack experience.
 
 ---
 
@@ -9,11 +9,13 @@
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Backend Packages](#backend-packages)
 - [File Structure](#file-structure)
 - [Getting Started](#getting-started)
 - [Server Details](#server-details)
 - [Client Details](#client-details)
 - [Configuration](#configuration)
+- [eBay Integration Setup](#ebay-integration-setup)
 - [Usage](#usage)
 - [Contact](#contact)
 
@@ -31,22 +33,41 @@ The backend is an ASP.NET Core Web API using .NET 8.0, PostgreSQL, and Entity Fr
 
 ## Features
 
-- Create, read, update, and delete your shopping lists and items
+- Create, read, update, and delete shopping lists and items
 - Set lists as public or private
-- View other users’ public lists
+- View other users' public lists
 - User authentication and authorization
 - Interactive API documentation with Swagger
+- Tag management for lists
+- React Query for data fetching and caching
+- eBay integration for notifications (requires additional setup)
 
 ---
 
 ## Tech Stack
 
-- **Frontend:** JavaScript, React 19, React Router DOM, Tailwind CSS, Vite
+- **Frontend:** JavaScript, React 19, React Router DOM v7, Tailwind CSS, Vite
 - **Backend:** C#, ASP.NET Core Web API, .NET 8.0
 - **Database:** PostgreSQL with Entity Framework Core
-- **Mapping:** AutoMapper for DTO and model conversions
+- **ORM:** Entity Framework Core
+- **Mapping:** AutoMapper
 - **Authentication:** ASP.NET Core Identity
 - **API Documentation:** Swagger (Swashbuckle)
+- **Query Library:** React Query
+- **Packages:** Npgsql.EntityFrameworkCore.PostgreSQL
+
+---
+
+## Backend Packages
+
+| Package | Version | Description |
+|---------|---------|-------------|
+| AutoMapper | 14.0.0 | Object-to-object mapping, commonly used to map between models and DTOs. |
+| FluentResults | 3.16.0 | Simplifies result and error handling with a functional approach. |
+| Microsoft.AspNetCore.Identity.EntityFrameworkCore | 8.0 | ASP.NET Core Identity support integrated with Entity Framework Core. |
+| Microsoft.EntityFrameworkCore.Design | 8.0 | Design-time tools for EF Core (e.g., migrations, scaffolding). |
+| Npgsql.EntityFrameworkCore.PostgreSQL | 8.0 | PostgreSQL database provider for Entity Framework Core. |
+| Swashbuckle.AspNetCore | 8.1.4 | Generates Swagger/OpenAPI documentation for your ASP.NET Core APIs. |
 
 ---
 
@@ -142,6 +163,16 @@ SnagList/
 ```
 
 </details>
+
+## Components
+
+- **AllLists.jsx:** Displays a list of all public lists.
+- **MyLists.jsx:** Displays a list of the current user's lists.
+- **ListDetails.jsx:** Displays the details of a specific list.
+- **NewList.jsx:** Allows the user to create a new list.
+- **EditList.jsx:** Allows the user to edit an existing list.
+- **AuthController.cs:** Handles user authentication and registration.
+- **ListController.cs:** Handles the creation, retrieval, updating, and deletion of lists.
 
 ## Getting Started
 
@@ -239,6 +270,40 @@ The client uses environment variables for configuration. Key settings include:
 
 ---
 
+## eBay Integration Setup
+
+**Important:** The notification features in SnagList require eBay API integration. Without proper eBay configuration, notification functionality will not work.
+
+### Prerequisites for eBay Integration
+
+1. **eBay Developer Account**: You must have an active eBay Developer account
+2. **eBay Developer Project**: Create a project in your eBay Developer dashboard
+3. **Client Credentials**: Obtain your Client ID and Client Secret from your eBay project
+
+### Configuration Steps
+
+1. **Set up eBay User Secrets** (required for notifications):
+
+   ```bash
+   dotnet user-secrets set "Ebay:ClientId" "your-ebay-client-id"
+   dotnet user-secrets set "Ebay:ClientSecret" "your-ebay-client-secret"
+   ```
+
+2. **eBay Developer Account Setup**:
+   - Visit [eBay Developers Program](https://developer.ebay.com/)
+   - Sign up for a developer account or log in
+   - Create a new application/project
+   - Note your Client ID and Client Secret from the application details
+
+### Important Notes
+
+- **Notifications will not function** without proper eBay API credentials
+- The eBay Client ID and Client Secret must be stored as user secrets (not in configuration files)
+- Ensure your eBay developer account is in good standing and your application is properly configured
+- Different eBay environments (sandbox vs production) require different credentials
+
+---
+
 ## Usage
 
 - **Register:** Create a new user account to start using SnagList.
@@ -249,6 +314,7 @@ The client uses environment variables for configuration. Key settings include:
 - **Browse Public Lists:** View lists created by other users.
 - **View Profiles:** See other users' profiles.
 - **Edit Profiles:** Update your own profile information.
+- **Notifications:** Receive eBay-powered notifications (requires eBay integration setup).
 
 ---
 
