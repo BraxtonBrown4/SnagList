@@ -48,7 +48,7 @@ public class NotificationController : ControllerBase
 
         List<Notification> ebayNotifications = new List<Notification>();
 
-        foreach (var item in items)
+        foreach (Item item in items)
         {
             await Task.Delay(2000);
 
