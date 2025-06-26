@@ -37,7 +37,7 @@ public class AutoCheckService : BackgroundService
 
             _logger.LogInformation($"Waiting {delay.TotalMinutes} minutes until next noon.");
 
-            await Task.Delay(delay, stoppingToken); // Wait until noon
+            await Task.Delay(delay, stoppingToken);
 
             if (!stoppingToken.IsCancellationRequested)
             {
@@ -63,8 +63,6 @@ public class AutoCheckService : BackgroundService
                             throw new Exception($"Failed to get Auth Token from EbayServices. Error: {AuthTokenResult.Errors.First().Message}");
                         }
 
-                        List<Notification> ebayNotifications = new List<Notification>();
-
                         foreach (Item item in items)
                         {
                             await Task.Delay(2000);
@@ -81,21 +79,18 @@ public class AutoCheckService : BackgroundService
                                 Notification notification = _mapper.Map<Notification>(ebayItem);
                                 notification.UserProfileId = item.List.UserProfileId;
 
-                                ebayNotifications.Add(notification);
+                                decimal bufferPrice = item.TargetPrice * 1.10M ?? 100M;
+
+                                if (bufferPrice > decimal.Parse(notification.Price))
+                                {
+                                    _db.Add(notification);
+                                }
                             }
                         }
 
-                        if (ebayNotifications.Count == 0)
-                        {
-                            _logger.LogInformation("No Notifications");
-                        }
-                        else
-                        {
-                            _db.Notifications.AddRange(ebayNotifications);
-                            _db.SaveChanges();
+                        _db.SaveChanges();
 
-                            _logger.LogInformation("Logged Notifications");
-                        }
+                        _logger.LogInformation("Logged Notifications");
                     }
                 }
                 catch (Exception ex)
@@ -104,7 +99,6 @@ public class AutoCheckService : BackgroundService
                 }
             }
 
-            // Wait 10 minutes before looping again, in case we ever run manually or for testing
             await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
         }
     }

@@ -52,7 +52,7 @@ public class NotificationController : ControllerBase
         {
             await Task.Delay(2000);
 
-            Result<EbaySearchResponse> ebayItemsResult = await _EbayServices.FetchItemsByName(item.Name, item.TargetPrice ?? 0M, AuthTokenResult.Value);
+            Result<EbaySearchResponse> ebayItemsResult = await _EbayServices.FetchItemsByName(item.Name, item.TargetPrice ?? 100M, AuthTokenResult.Value);
 
             if (ebayItemsResult.IsFailed)
             {
@@ -63,8 +63,11 @@ public class NotificationController : ControllerBase
             {
                 Notification notification = _mapper.Map<Notification>(ebayItem);
                 notification.UserProfileId = profile.Id;
+                decimal bufferPrice = item.TargetPrice * 1.10M ?? 100M;
 
-                ebayNotifications.Add(notification);
+                if (bufferPrice > decimal.Parse(notification.Price)) {
+                    ebayNotifications.Add(notification);
+                }
             }
         }
 
