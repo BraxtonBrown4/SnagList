@@ -57,6 +57,7 @@ builder.Services.AddNpgsql<SnagListDbContext>(builder.Configuration["SnagListDbC
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddScoped<EbayServices>();
+builder.Services.AddHostedService<AutoCheckService>();
 builder.Services.AddMemoryCache();
 
 
