@@ -1,4 +1,3 @@
-```markdown
 # SnagList
 
 **SnagList** is a list manager app that lets you keep track of items you want to buy. You can also browse other people's lists if they've set them to public. The app uses modern technologies including JavaScript, React, Tailwind CSS, AutoMapper, and C# for a full-stack experience.
@@ -324,4 +323,3 @@ The client uses environment variables for configuration. Key settings include:
 For questions or feedback, please contact [braxtoncarterbrown@gmail.com](mailto:braxtoncarterbrown@gmail.com).
 
 ---
-```
