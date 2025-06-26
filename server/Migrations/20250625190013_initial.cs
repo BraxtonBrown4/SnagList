@@ -54,6 +54,26 @@ namespace SnagList.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
+                    NotificationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Image = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<string>(type: "text", nullable: false),
+                    Currency = table.Column<string>(type: "text", nullable: false),
+                    ItemWebUrl = table.Column<string>(type: "text", nullable: false),
+                    Condition = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tags",
                 columns: table => new
                 {
@@ -226,7 +246,8 @@ namespace SnagList.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: true),
                     TargetPrice = table.Column<decimal>(type: "numeric", nullable: true),
-                    Image = table.Column<string>(type: "text", nullable: true)
+                    Image = table.Column<string>(type: "text", nullable: true),
+                    Notify = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -273,7 +294,7 @@ namespace SnagList.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "3ae4b3b8-c40c-4e2a-aa6a-680d4e090117", "braxtoncarterbrown@gmail.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEDNlndJ0wTEMZUEqaf0jL69fId+jkrAp4vmeRMRjv5YNvC4R9z85bqbVgomxgnTKcA==", null, false, "e5c7dea7-54ae-4754-877b-ac2f44047fa2", false, "Robopolo" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "25e3d079-5fe7-4481-a9ce-b81f2606d7c5", "braxtoncarterbrown@gmail.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEI4NjJhv/OTMrDd+/NvHfWytiW1HrZ4CTu1T1A+CVN61EcywLWesJ98segz9YzS5dA==", null, false, "03d2d17f-a2b4-49c0-b330-13041591d024", false, "Robopolo" });
 
             migrationBuilder.InsertData(
                 table: "Tags",
@@ -306,11 +327,11 @@ namespace SnagList.Migrations
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "Image", "ListId", "Name", "Price", "TargetPrice" },
+                columns: new[] { "Id", "Image", "ListId", "Name", "Notify", "Price", "TargetPrice" },
                 values: new object[,]
                 {
-                    { 1, null, 1, "AirPods", 170m, null },
-                    { 2, null, 2, "socks", 6m, null }
+                    { 1, null, 1, "AirPods", true, 170m, 70m },
+                    { 2, null, 2, "socks", false, 6m, null }
                 });
 
             migrationBuilder.InsertData(
@@ -410,6 +431,9 @@ namespace SnagList.Migrations
 
             migrationBuilder.DropTable(
                 name: "ListTags");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

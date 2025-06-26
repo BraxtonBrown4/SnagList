@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -14,4 +15,6 @@ public class Item
     public decimal? Price { get; set; }
     public decimal? TargetPrice { get; set; }
     public string? Image { get; set; }
+    [DefaultValue(false)]
+    public bool Notify { get; set; }
 }

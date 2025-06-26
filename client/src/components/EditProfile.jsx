@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { editUserProfile, getUserProfileById } from "../managers/userProfileManager"
 import { useEditUserProfile, useGetUserProfileById } from "../queryHooks/userProfileQueryHooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { LoadingModal } from "../modals/LoadingModal";

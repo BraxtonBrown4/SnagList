@@ -23,5 +23,12 @@ public class AutoMapperProfiles : Profile
         CreateMap<List, DetailedListDTO>().ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.ListTags.Select(lt => lt.Tag)));
         CreateMap<ListTag, CreateListTagDTO>().ReverseMap();
         CreateMap<UserProfile, DetailedUserProfileDTO>().ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.IdentityUser.Email)).ReverseMap();
+        CreateMap<UserProfile, VisitorUserProfileDTO>();
+        CreateMap<EbayItem, Notification>()
+        .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image.ImageUrl))
+        .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price.Value))
+        .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Price.CurrencyCode))
+        .ForMember(dest => dest.NotificationDate, opt => opt.MapFrom(_ => DateTime.Now));
+        CreateMap<Notification, DefaultNotificationDTO>();
     }
 }

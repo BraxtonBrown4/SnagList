@@ -116,7 +116,7 @@ public class UserProfileController : ControllerBase
         else
         {
             userProfile.Lists = userProfile.Lists.Where(l => l.IsPublic).ToList();
-            DefaultUserProfileDTO DTO = _mapper.Map<DefaultUserProfileDTO>(userProfile);
+            VisitorUserProfileDTO DTO = _mapper.Map<VisitorUserProfileDTO>(userProfile);
             return Ok(DTO);
         }
     }

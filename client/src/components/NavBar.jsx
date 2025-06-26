@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink as RRNavLink } from "react-router-dom";
 import { logout } from "../managers/authManager";
+import { NotificationBell } from "./NotificationBell";
 
 export default function NavBar({ loggedInUser, setLoggedInUser }) {
   const [open, setOpen] = useState(false);
@@ -17,71 +18,68 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
         <div className="hidden md:flex items-center space-x-8">
           {loggedInUser ? (
             <>
-              <RRNavLink 
+              <RRNavLink
                 to="/My-Lists"
-                className={({ isActive }) => 
-                  `font-medium transition-colors duration-200 pb-1 ${
-                    isActive 
-                      ? 'text-blue-600 border-b-2 border-blue-600' 
-                      : 'text-gray-700 hover:text-blue-600'
+                className={({ isActive }) =>
+                  `font-medium transition-colors duration-200 pb-1 ${isActive
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-700 hover:text-blue-600'
                   }`
                 }
               >
                 My Lists
               </RRNavLink>
 
-              <RRNavLink 
+              <RRNavLink
                 to="/All-Lists"
-                className={({ isActive }) => 
-                  `font-medium transition-colors duration-200 pb-1 ${
-                    isActive 
-                      ? 'text-blue-600 border-b-2 border-blue-600' 
-                      : 'text-gray-700 hover:text-blue-600'
+                className={({ isActive }) =>
+                  `font-medium transition-colors duration-200 pb-1 ${isActive
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-700 hover:text-blue-600'
                   }`
                 }
               >
                 All Lists
               </RRNavLink>
 
-              <RRNavLink 
+              <RRNavLink
                 to="/New-List"
-                className={({ isActive }) => 
-                  `font-medium transition-colors duration-200 pb-1 ${
-                    isActive 
-                      ? 'text-blue-600 border-b-2 border-blue-600' 
-                      : 'text-gray-700 hover:text-blue-600'
+                className={({ isActive }) =>
+                  `font-medium transition-colors duration-200 pb-1 ${isActive
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-700 hover:text-blue-600'
                   }`
                 }
               >
                 New List
               </RRNavLink>
 
-              <RRNavLink 
+              <RRNavLink
                 to="/Tags"
-                className={({ isActive }) => 
-                  `font-medium transition-colors duration-200 pb-1 ${
-                    isActive 
-                      ? 'text-blue-600 border-b-2 border-blue-600' 
-                      : 'text-gray-700 hover:text-blue-600'
+                className={({ isActive }) =>
+                  `font-medium transition-colors duration-200 pb-1 ${isActive
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-700 hover:text-blue-600'
                   }`
                 }
               >
                 Tags
               </RRNavLink>
 
-              <RRNavLink 
+              <RRNavLink
                 to={`/Profile/${loggedInUser.id}`}
-                className={({ isActive }) => 
-                  `font-medium transition-colors duration-200 pb-1 ${
-                    isActive 
-                      ? 'text-blue-600 border-b-2 border-blue-600' 
-                      : 'text-gray-700 hover:text-blue-600'
+                className={({ isActive }) =>
+                  `font-medium transition-colors duration-200 pb-1 ${isActive
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-700 hover:text-blue-600'
                   }`
                 }
               >
                 Profile
               </RRNavLink>
-              
+
+              <NotificationBell/>
+
               <button
                 onClick={(e) => {
                   e.preventDefault();
@@ -145,20 +143,17 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className={`md:hidden transition-all duration-300 ease-in-out ${
-        open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-      }`}>
+      <div className={`md:hidden transition-all duration-300 ease-in-out ${open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+        }`}>
         <div className="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg border-t border-gray-200">
           {loggedInUser ? (
             <>
               <RRNavLink
                 to="/My-Lists"
-                className={({ isActive }) => 
-                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                    isActive 
-                      ? 'text-blue-600 bg-blue-50' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                className={({ isActive }) =>
+                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${isActive
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                   }`
                 }
                 onClick={() => setOpen(false)}
@@ -168,11 +163,10 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
 
               <RRNavLink
                 to="/All-Lists"
-                className={({ isActive }) => 
-                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                    isActive 
-                      ? 'text-blue-600 bg-blue-50' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                className={({ isActive }) =>
+                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${isActive
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                   }`
                 }
                 onClick={() => setOpen(false)}
@@ -182,11 +176,10 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
 
               <RRNavLink
                 to="/New-List"
-                className={({ isActive }) => 
-                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                    isActive 
-                      ? 'text-blue-600 bg-blue-50' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                className={({ isActive }) =>
+                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${isActive
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                   }`
                 }
                 onClick={() => setOpen(false)}
@@ -196,11 +189,10 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
 
               <RRNavLink
                 to="/Tags"
-                className={({ isActive }) => 
-                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                    isActive 
-                      ? 'text-blue-600 bg-blue-50' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                className={({ isActive }) =>
+                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${isActive
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                   }`
                 }
                 onClick={() => setOpen(false)}
@@ -210,17 +202,18 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
 
               <RRNavLink
                 to={`/Profile/${loggedInUser.id}`}
-                className={({ isActive }) => 
-                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                    isActive 
-                      ? 'text-blue-600 bg-blue-50' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                className={({ isActive }) =>
+                  `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${isActive
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                   }`
                 }
                 onClick={() => setOpen(false)}
               >
                 Profile
               </RRNavLink>
+
+              <NotificationBell/>
 
               <div className="px-3 py-2">
                 <button

@@ -66,7 +66,7 @@ public class ListController : ControllerBase
 
     public IActionResult GetListById(int id)
     {
-        List list = _db.Lists.Include(l => l.ListTags).ThenInclude(lt => lt.Tag).Include(l => l.Items).FirstOrDefault(l => l.Id == id);
+        List list = _db.Lists.Include(l => l.ListTags).ThenInclude(lt => lt.Tag).Include(l => l.Items).Include(l => l.UserProfile).FirstOrDefault(l => l.Id == id);
 
         if (list == null)
         {

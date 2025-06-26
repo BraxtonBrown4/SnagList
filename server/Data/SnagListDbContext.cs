@@ -15,6 +15,7 @@ public class SnagListDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Tag> Tags { get; set; }
     public DbSet<ListTag> ListTags { get; set; }
     public DbSet<Item> Items { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     public SnagListDbContext(DbContextOptions<SnagListDbContext> context, IConfiguration config) : base(context)
     {
@@ -129,8 +130,9 @@ public class SnagListDbContext : IdentityDbContext<IdentityUser>
                 ListId = 1,
                 Name = "AirPods",
                 Price = 170,
-                TargetPrice = null,
+                TargetPrice = 70,
                 Image = null,
+                Notify = true,
             },
             new Item
             {
@@ -140,6 +142,7 @@ public class SnagListDbContext : IdentityDbContext<IdentityUser>
                 Price = 6,
                 TargetPrice = null,
                 Image = null,
+                Notify = false,
             },
         });
 
